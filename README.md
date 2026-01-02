@@ -56,6 +56,8 @@
 ## News
 &#9744; TODO: create and release an end-to-end tool.
 <br>&#x2705; Dec 31, 2025: Published in Nature Machine Intelligence.
+<br>&#x2705; Dec 04, 2025: Informally presented at NeurIPS 2025.
+<br>&#x2705; Nov 05, 2024: Presented at MoML@MIT 2024.
 <br>&#x2705; Nov 01, 2024: Preprint released on bioRxiv.
 
 <!-- ABOUT THE PROJECT -->
