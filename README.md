@@ -4,7 +4,7 @@
 
 <div align="center">
 
-  <h1 align="center">ImmunoStruct</h1>
+  <h1 align="center"><code>ImmunoStruct</code></h1>
   <p align="center">
     <b>ImmunoStruct enables multimodal deep learning for immunogenicity prediction</b>
   </p>
