@@ -5,20 +5,18 @@
 <div align="center">
 
   <h1 align="center"><code>ImmunoStruct</code></h1>
-  <p align="center">
-    <b>ImmunoStruct enables multimodal deep learning for immunogenicity prediction</b>
-  </p>
-
-  Published at Nature Machine Intelligence on Dec 31, 2025.
 
 <!-- PROJECT SHIELDS -->
 [![nature](https://img.shields.io/badge/nature-machine_intelligence-white)](https://www.nature.com/articles/s42256-025-01163-y)
 [![bioRxiv](https://img.shields.io/badge/bioRxiv-ImmunoStruct-firebrick)](https://www.biorxiv.org/content/10.1101/2024.11.01.621580)
-
 ![Python](https://img.shields.io/badge/Python-3.10-3776ab)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.1.2-ee4c2c)
 [![Twitter Follow](https://img.shields.io/twitter/follow/KrishnaswamyLab.svg?style=social)](https://twitter.com/KrishnaswamyLab)
 [![GitHub Stars](https://img.shields.io/github/stars/KrishnaswamyLab/ImmunoStruct.svg?style=social\&label=Stars)](https://github.com/KrishnaswamyLab/ImmunoStruct)
+
+  <p align="center">
+    <b>ImmunoStruct enables multimodal deep learning for immunogenicity prediction</b>
+  </p>
 
 </div>
 
@@ -27,6 +25,9 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
+    <li>
+      <a href="#news">News</a>
+    </li>
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
@@ -51,6 +52,11 @@
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
+
+## News
+&#9744; TODO: create and release an end-to-end tool.
+<br>&#x2705; Published at Nature Machine Intelligence on Dec 31, 2025.
+<br>&#x2705; Preprint released at bioRxiv on Nov 01, 2024.
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
