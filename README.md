@@ -9,6 +9,8 @@
     <b>ImmunoStruct enables multimodal deep learning for immunogenicity prediction</b>
   </p>
 
+  Published at Nature Machine Intelligence on Dec 31, 2025.
+
 <!-- PROJECT SHIELDS -->
 [![nature](https://img.shields.io/badge/nature-machine_intelligence-white)](https://www.nature.com/articles/s42256-025-01163-y)
 [![bioRxiv](https://img.shields.io/badge/bioRxiv-ImmunoStruct-firebrick)](https://www.biorxiv.org/content/10.1101/2024.11.01.621580)
