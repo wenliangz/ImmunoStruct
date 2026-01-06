@@ -6,13 +6,18 @@
 
   <h1><code>ImmunoStruct</code></h1>
 
-  [![nature](https://img.shields.io/badge/nature-machine_intelligence-white)](https://www.nature.com/articles/s42256-025-01163-y)
+  [![nature](https://img.shields.io/badge/nature_machine_intelligence-white)](https://www.nature.com/articles/s42256-025-01163-y)
   [![bioRxiv](https://img.shields.io/badge/bioRxiv-ImmunoStruct-firebrick)](https://www.biorxiv.org/content/10.1101/2024.11.01.621580)
-  ![Python](https://img.shields.io/badge/Python-3.10-3776ab)
+  <br>![Python](https://img.shields.io/badge/Python-3.10-3776ab)
   ![PyTorch](https://img.shields.io/badge/PyTorch-2.1.2-ee4c2c)
-  [![Twitter Follow](https://img.shields.io/twitter/follow/KrishnaswamyLab.svg?style=social)](https://twitter.com/KrishnaswamyLab)
   [![GitHub Stars](https://img.shields.io/github/stars/KrishnaswamyLab/ImmunoStruct.svg?style=social\&label=Stars)](https://github.com/KrishnaswamyLab/ImmunoStruct)
-
+  <br>[![LinkedIn](https://img.shields.io/badge/LinkedIn-Kevin_Bijan_Givechian-blue)](https://www.linkedin.com/in/kevin-bijan-givechian-phd-36467ba3/)
+  [![LinkedIn](https://img.shields.io/badge/LinkedIn-Joao_Felipe_Rocha-blue)](https://www.linkedin.com/in/joao-felipe-rocha/)
+  [![LinkedIn](https://img.shields.io/badge/LinkedIn-Chen_Liu-blue)](https://www.linkedin.com/in/chenliu1996/)
+  <br>[![Twitter Follow](https://img.shields.io/twitter/follow/Kevin.svg?style=social)](https://x.com/KevinGivechian)
+  [![Twitter Follow](https://img.shields.io/twitter/follow/Chen.svg?style=social)](https://x.com/ChenLiu_1996)
+  [![Twitter Follow](https://img.shields.io/twitter/follow/KrishnaswamyLab.svg?style=social)](https://x.com/KrishnaswamyLab)
+  
 <b>ImmunoStruct enables multimodal deep learning for immunogenicity prediction</b>
 
 </div>
