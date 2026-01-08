@@ -60,8 +60,14 @@
 </details>
 
 ## News
-[![news](https://img.shields.io/badge/news-Decoding_Bio-pink)](https://decodingbio.substack.com/p/biobyte-144-a-virtual-model-of-cell?utm_source=post-email-title&publication_id=1079498&post_id=183883975&utm_campaign=email-post-title&isFreemail=true&r=1lwga0&triedRedirect=true&utm_medium=email)
-[![news](https://img.shields.io/badge/news-Bioengineer-pink)](https://bioengineer.org/immunostruct-advancing-deep-learning-in-immunogenicity-prediction/)
+
+News in English<br>
+[![news](https://img.shields.io/badge/news-Decoding_Bio-silver)](https://decodingbio.substack.com/p/biobyte-144-a-virtual-model-of-cell)
+[![news](https://img.shields.io/badge/news-Bioengineer-silver)](https://bioengineer.org/immunostruct-advancing-deep-learning-in-immunogenicity-prediction/)
+[![news](https://img.shields.io/badge/news-GeneOnline-silver)](https://www.geneonline.com/deep-learning-model-immunostruct-developed-to-improve-prediction-of-immunogenic-epitopes-for-vaccine-research/)
+
+News in Chinese<br>
+[![news](https://img.shields.io/badge/news-Tencent_Cloud-silver)](https://cloud.tencent.com/developer/article/2612794)
 
 
 &#9744; TODO: create and release an end-to-end tool.
