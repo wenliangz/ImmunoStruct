@@ -3,7 +3,7 @@
 <!-- PROJECT LOGO -->
 
 <div align="center">
-  <h1><code>ImmunoStruct</code></h1>
+  <h1><img src="assets/ImmunoStruct_cover.png" width="200"><br><code>ImmunoStruct</code></h1>
   <h3>ImmunoStruct enables multimodal deep learning for immunogenicity prediction</h3>
   
   [![nature](https://img.shields.io/badge/nature_machine_intelligence-gold)](https://www.nature.com/articles/s42256-025-01163-y)
@@ -17,10 +17,6 @@
   <br>[![Twitter Follow](https://img.shields.io/twitter/follow/Kevin.svg?style=social)](https://x.com/KevinGivechian)
   [![Twitter Follow](https://img.shields.io/twitter/follow/Chen.svg?style=social)](https://x.com/ChenLiu_1996)
   [![Twitter Follow](https://img.shields.io/twitter/follow/KrishnaswamyLab.svg?style=social)](https://x.com/KrishnaswamyLab)
-</div>
-
-<div align="center">
-  <img src="assets/ImmunoStruct_cover.png" width="300">
 </div>
 
 <!-- TABLE OF CONTENTS -->
