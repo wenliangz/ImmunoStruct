@@ -98,6 +98,7 @@ ImmunoStruct is a multimodal deep learning framework that integrates sequence, s
 
 <div align="center">
   <img src="assets/contrastive_learning.png" alt="Contrastive Learning Approach" width="800">
+  <img src="assets/visualizations.png" alt="Visualizations" width="800">
 </div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
