@@ -116,7 +116,7 @@ BibTeX:
   title={ImmunoStruct enables multimodal deep learning for immunogenicity prediction},
   author={Givechian, Kevin Bijan and Rocha, Jo{\~a}o Felipe and Liu, Chen and Yang, Edward and Tyagi, Sidharth and Greene, Kerrie and Ying, Rex and Caron, Etienne and Iwasaki, Akiko and Krishnaswamy, Smita},
   journal={Nature Machine Intelligence},
-  pages={1--14},
+  pages={70--83},
   year={2025},
   publisher={Nature Publishing Group UK London}
 }
