@@ -112,7 +112,7 @@ def main(args):
 
         if args.use_turbo:
             if runner is not None:
-                runner = cf_af.prep_model_runner(opt, old_runner=runner)
+                runner = cf_af.prep_model_runner(opt, old_runner=runner, params_loc=args.params_loc)
             else:
                 runner = cf_af.prep_model_runner(opt, params_loc=args.params_loc)
 

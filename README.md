@@ -8,7 +8,7 @@
 
   [![nature](https://img.shields.io/badge/nature_machine_intelligence-gold)](https://www.nature.com/articles/s42256-025-01163-y)
   [![PDF](https://img.shields.io/badge/PDF-DADBDD)](https://www.nature.com/articles/s42256-025-01163-y.pdf)
-  ![Python](https://img.shields.io/badge/Python-3.10-3776ab)
+  ![Python](https://img.shields.io/badge/Python-3.8-3776ab)
   ![PyTorch](https://img.shields.io/badge/PyTorch-2.1.2-ee4c2c)
   [![GitHub Stars](https://img.shields.io/github/stars/KrishnaswamyLab/ImmunoStruct.svg?style=social\&label=Stars)](https://github.com/KrishnaswamyLab/ImmunoStruct)
   <br>[![LinkedIn](https://img.shields.io/badge/LinkedIn-Kevin-blue)](https://www.linkedin.com/in/kevin-bijan-givechian-phd-36467ba3/)
@@ -138,13 +138,13 @@ To get ImmunoStruct up and running locally, follow these steps.
 ### Pre-requisites
 
 Before installation, ensure you have:
-* Python 3.10+
+* Python 3.8+
 * CUDA-compatible GPU (recommended)
 * Conda package manager
 * Weights & Biases account for experiment tracking
 
 ### Dependencies
-- python 3.10
+- python 3.8
 - torch 2.1.2
 - dgl
 - torch_geometric 2.5.3
@@ -159,14 +159,14 @@ Before installation, ensure you have:
 
 2. **Create and activate conda environment**
    ```sh
-   conda create --name immuno python=3.10 -c anaconda -c conda-forge
+   conda create --name immuno python=3.8 -c anaconda -c conda-forge -y
    conda activate immuno
    ```
 
 3. **Install core dependencies**
    ```sh
-   conda install cudatoolkit=11.2 wandb pydantic -c conda-forge
-   conda install scikit-image pillow matplotlib seaborn tqdm -c anaconda
+   conda install cudatoolkit=11.2 wandb pydantic -c conda-forge -y
+   conda install scikit-image pillow matplotlib seaborn tqdm -c anaconda -y
    ```
 
 4. **Install PyTorch**
@@ -182,15 +182,21 @@ Before installation, ensure you have:
 
 6. **Install PyTorch Geometric and related packages**
    ```sh
-   python -m pip install torch-scatter==2.1.2+pt21cu118 torch-sparse==0.6.18+pt21cu118 torch-cluster==1.6.3+pt21cu118 torch-spline-conv==1.2.2+pt21cu118 torch_geometric==2.5.3 numpy==1.26.3 -f https://data.pyg.org/whl/torch-2.1.2+cu118.html
+   python -m pip install torch-scatter==2.1.2+pt21cu118 torch-sparse==0.6.18+pt21cu118 torch-cluster==1.6.3+pt21cu118 torch-spline-conv==1.2.2+pt21cu118 torch_geometric==2.5.3 numpy==1.21.1 -f https://data.pyg.org/whl/torch-2.1.2+cu118.html
    ```
 
-7. **Install folding-related packages**
+7. **Install AlphaFold2-related packages**
    ```sh
-   python -m pip install "alphafold @ git+https://github.com/deepmind/alphafold.git"
-   python -m pip install "colabfold"
-   python -m pip install "jax==0.4.23" "jaxlib==0.4.23" "dm-haiku==0.0.10"
+   python -m pip install jax==0.2.25 jaxlib==0.1.69+cuda111 -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+   python -m pip install "alphafold-colabfold==2.0.0" "colabfold==1.2.0" "dm-haiku==0.0.4"
+   python -m pip install "biopython==1.78"
    ```
+
+   Go to /path/to/environment/lib/python3.8/site-packages/jaxlib/xla_client.py: change `np.object` to `object`.
+
+   Go to /path/to/environment/lib/python3.8/site-packages/alphafold/common/residue_constants.py: change `np.int` to `np.int32`.
+
+   Go to /path/to/environment/lib/python3.8/site-packages/alphafold/data/templates.py: change `np.object` to `object`.
 
 8. **Install additional packages**
    ```sh
