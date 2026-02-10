@@ -31,16 +31,13 @@ def mask_sequence(seq_one_hot, percentage=10):
     return masked_seq
 
 if __name__ == '__main__':
-    # TODO: Update the folders here.
-    # alphafold_folder = ROOT_DIR + '/data/alphafold_pdb_Cancer/'
-    # save_folder = ROOT_DIR + '/data/graph_pyg_Cancer/'
+    import argparse
+    parser = argparse.ArgumentParser(description="Convert AlphaFold PDBs to PyG graphs.")
+    parser.add_argument("--input-dir", default=f"{ROOT_DIR}/data/alphafold_pdb_IEDB/", type=str)
+    parser.add_argument("--output-dir", default=f"{ROOT_DIR}/data/graph_pyg_IEDB/", type=str)
+    args = parser.parse_args()
 
-    # alphafold_folder = ROOT_DIR + '/data/alphafold_pdb_Cancer_WT/'
-    # save_folder = ROOT_DIR + '/data/graph_pyg_Cancer_WT/'
-
-    alphafold_folder = ROOT_DIR + '/data/alphafold_pdb_Clinical/'
-    save_folder = ROOT_DIR + '/data/graph_pyg_Clinical/'
-    os.makedirs(save_folder, exist_ok=True)
+    os.makedirs(args.output_dir, exist_ok=True)
 
     # Generate different edge constructions
     new_edge_funcs = {
@@ -90,16 +87,14 @@ if __name__ == '__main__':
     g2s = []
     peptide_order_list = []
     convertor = GraphFormatConvertor(src_format = 'nx', dst_format = 'pyg')
-    file_list = sorted(glob(alphafold_folder + '*.pdb'))
+    file_list = sorted(glob(os.path.join(args.input_dir, '*.pdb')))
     for filename in file_list:
         try:
             filename_no_extension = os.path.basename(filename).replace('.pdb', '')
-            save_filename = save_folder + filename_no_extension + '.pt'
-            # if os.path.isfile(save_filename):
-            #     print('Already processed {}'.format(filename_no_extension))
-            #     continue
+            save_filename = os.path.join(args.output_dir, filename_no_extension + '.pt')
 
-            g = construct_graph(config = config, path = filename);
+            g = construct_graph(config = config, path = filename)
+            # First 179 residues are the extracellular domain of the MHC. 273 and beyond are the peptide.
             g2 = extract_subgraph_by_sequence_position(g, list(range(1, 180)) + list(range(273, 1000)))
             g_pyg = convertor(g2)
 
@@ -111,10 +106,10 @@ if __name__ == '__main__':
             tdfa = tdfa[:179]
             sequence_a = tdfa['residue_name'].tolist()
 
-            tdfb = tdf[tdf['chain_id'] == 'A']
+            tdfb = tdf[tdf['chain_id'] == 'B']
             tdfb = tdfb.drop_duplicates('residue_number')
-            tdfb = tdfb[272:]
             sequence_b = tdfb['residue_name'].tolist()
+            import pdb; pdb.set_trace()
 
             #add node features to each graph here
             n_hdonors = torch.tensor([d['hbond_donors'] for n, d in g2.nodes(data=True)])
@@ -134,7 +129,7 @@ if __name__ == '__main__':
             g2s.append(g2)
 
             # Use the masked amino acid one-hot encoding as node features, along with number of H-donors/acceptors
-            node_feats = torch.cat([aa_one_hot, n_hdonors, n_hacceptors], dim =1)
+            node_feats = torch.cat([aa_one_hot, n_hdonors, n_hacceptors], dim=1)
             g_pyg.x = node_feats
 
             pygs.append(g_pyg)
@@ -152,6 +147,6 @@ if __name__ == '__main__':
             log_message = 'Error creating graph {}. Encountered exception {}'.format(filename_no_extension, e)
             print(log_message)
 
-            log_file = ROOT_DIR + "data/error_log.txt"
+            log_file = os.path.join(args.output_dir, "error_log.txt")
             with open(log_file, 'a') as file:
                 file.write(log_message + '\n')

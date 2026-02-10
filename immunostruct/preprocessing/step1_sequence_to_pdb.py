@@ -19,15 +19,6 @@ def _detect_device():
     return "gpu"
 
 
-def _ensure_paths(tmp_dir):
-    if "alphafold" not in sys.path:
-        sys.path.append("alphafold")
-    if "ColabFold/beta" not in sys.path:
-        sys.path.append("ColabFold/beta")
-    if f"{tmp_dir}/bin" not in os.environ.get("PATH", ""):
-        os.environ["PATH"] = f"{os.environ.get('PATH', '')}:{tmp_dir}/bin:{tmp_dir}/scripts"
-
-
 def _build_options(feature_dict, args):
     max_msa_clusters, max_extra_msa = [int(x) for x in args.max_msa.split(":")]
     return {
@@ -48,7 +39,7 @@ def _build_options(feature_dict, args):
 def standardize_hla(allele: str) -> str:
     """Standardize HLA allele strings to the canonical 'HLA-A*01:01' format."""
     allele = allele.strip().upper()
-    match = re.match(r"^HLA-([A-Z])\*?(\d{2,3}):(\d{2,3})$", allele)
+    match = re.match(r"^HLA-([A-Z])\*?(\d{2,3}):?(\d{2,3})$", allele)
     if match:
         locus, group, field = match.groups()
         return f"HLA-{locus}*{group}:{field}"
@@ -63,23 +54,22 @@ def main(args):
     _detect_device()
     if not args.use_ptm and args.rank_by == "pTMscore":
         print("WARNING: models will be ranked by pLDDT, 'use_ptm' is needed to compute pTMscore")
-    _ensure_paths(args.tmp_dir)
+        args.rank_by = "pLDDT"
 
     allele_sequence_csv = pd.read_csv(args.allele_sequence_csv)
     allele_to_sequence = allele_sequence_csv.set_index("allele")["seqs"].to_dict()
 
     runner = None
     folding_input_df = pd.read_csv(args.input_csv)
+    folding_input_df = folding_input_df.sort_values(by=[args.allele_col_name, args.peptide_col_name])
+    print("Running these samples: " +  str(args.start) + " to " + str(args.end) + " of " + str(len(folding_input_df)))
     for row_idx, row in tqdm(folding_input_df.iterrows(), total=len(folding_input_df)):
-        if row_idx == 0:
-            continue
-        data_idx = row_idx - 1
-        if data_idx < args.start or data_idx > args.end:
+        if row_idx < args.start or row_idx > args.end:
             continue
 
-        peptide = row[args.peptide_col_name]
         allele = row[args.allele_col_name]
         allele = standardize_hla(allele)
+        peptide = row[args.peptide_col_name]
         MHC_sequence = allele_to_sequence[allele]
 
         if "hla_seq" in row.keys():
