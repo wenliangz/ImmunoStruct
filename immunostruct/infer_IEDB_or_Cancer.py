@@ -9,8 +9,6 @@ from models.mapping import model_map
 from utils import seed_everything, update_paths
 from procedures import inference, inference_comparative
 
-# python infer_IEDB_or_Cancer.py --model HybridModelv2 --model-dir D:/Edward/Smita_Lab_Work/ImmunoPred/results/PropIEDB_ImmunoIEDB_final --model-filename HybridModelv2-lr_pt_0.001-lr_ft_0.0001-ep_40-bs_150-fseq_True-seql_True-fs_23-cs_3-seed_2_finetune.pt --full-sequence --infer_dataset IEDB --hla-path D:\Edward\Smita_Lab_Work\HLA_27_seqs_csv.csv --graph-dir-IEDB D:\Edward\Smita_Lab_Work\IEDB\PyGs --property-path-IEDB D:\Edward\Smita_Lab_Work\complete_score_Mprops_1_2_smoothed_sasa_v2.txt
-# python infer_IEDB_or_Cancer.py --model HybridModelv2_Comparative --model-dir D:/Edward/Smita_Lab_Work/ImmunoPred/results/PropIEDB_PropCancer_ImmunoCancer_final --model-filename HybridModelv2_Comparative-wtds_True-lr_pt_0.001-lr_ft_0.0001-cc_0-ssl_False-ep_40-bs_128-fseq_True-seql_True-fs_23-cs_3-seed_1_finetune.pt --full-sequence --infer_dataset Cancer --hla-path D:\Edward\Smita_Lab_Work\HLA_27_seqs_csv.csv --graph-dir-cancer D:\Edward\Smita_Lab_Work\Cancer_2 --property-path-cancer D:\Edward\Smita_Lab_Work\cedar_data_final_with_mprop1_mprop2_v2.txt --property-path-wildtype D:\Edward\Smita_Lab_Work\cedar_data_final_WILD_TYPE_with_mprop1_mprop2_v2_has_mprop10_11_v2.txt --graph-dir-wildtype D:\Edward\Smita_Lab_Work\graph_pyg_Cancer_WT --comparative --use-wt-for-downstream
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Entry point.")
@@ -36,10 +34,10 @@ if __name__ == "__main__":
     parser.add_argument("--graph-dir-IEDB", default="$ROOT/data/graph_pyg_IEDB/", type=str)
     parser.add_argument("--graph-dir-cancer", default="$ROOT/data/graph_pyg_Cancer/", type=str)
     parser.add_argument("--graph-dir-wildtype", default="$ROOT/data/graph_pyg_Cancer_WT/", type=str) # only used for comparative
-    parser.add_argument("--property-path-IEDB", default="$ROOT/data/complete_score_Mprops_1_2_smoothed_sasa_v2.txt", type=str)
-    parser.add_argument("--property-path-cancer", default="$ROOT/data/cedar_data_final_with_mprop1_mprop2_v2.txt", type=str)
-    parser.add_argument("--property-path-wildtype", default="$ROOT/data/cedar_data_final_WILD_TYPE_with_mprop1_mprop2_v2.txt", type=str) # only used for comparative
-    parser.add_argument("--hla-path", default="$ROOT/data/HLA_27_seqs_csv.csv", type=str)
+    parser.add_argument("--property-path-IEDB", default="$ROOT/data/ImmunoStruct_IEDB_data.csv", type=str)
+    parser.add_argument("--property-path-cancer", default="$ROOT/data/ImmunoStruct_CEDAR_data_cancer.csv", type=str)
+    parser.add_argument("--property-path-wildtype", default="$ROOT/data/ImmunoStruct_CEDAR_data_wildtype.csv", type=str) # only used for comparative
+    parser.add_argument("--hla-path", default="$ROOT/data/HLA_allele_sequences.csv", type=str)
 
     config = parser.parse_args()
 
@@ -63,7 +61,7 @@ if __name__ == "__main__":
 
     print('Retrieving dataset')
     dataset_ft = None
-    if config.infer_dataset == "IEDB": 
+    if config.infer_dataset == "IEDB":
         dataset_ft = ImmunoPredInferDataset(config,
                                                 graph_directory=config.graph_dir_IEDB,
                                                 property_path=config.property_path_IEDB,

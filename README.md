@@ -5,7 +5,7 @@
 <div align="center">
   <h1><img src="assets/ImmunoStruct_cover.png" width="200"><br><code>ImmunoStruct</code></h1>
   <h3>ImmunoStruct enables multimodal deep learning for immunogenicity prediction</h3>
-  
+
   [![nature](https://img.shields.io/badge/nature_machine_intelligence-gold)](https://www.nature.com/articles/s42256-025-01163-y)
   [![PDF](https://img.shields.io/badge/PDF-DADBDD)](https://www.nature.com/articles/s42256-025-01163-y.pdf)
   ![Python](https://img.shields.io/badge/Python-3.10-3776ab)
@@ -206,19 +206,21 @@ Before installation, ensure you have:
 ### Data Preparation
 
 Place the following files in the `data/` folder:
-- `cedar_data_final_with_mprop1_mprop2_v2.txt`
-- `complete_score_Mprops_1_2_smoothed_sasa_v2.txt`
-- `HLA_27_seqs_csv.csv`
+- `ImmunoStruct_IEDB_data.csv`
+- `ImmunoStruct_CEDAR_data_cancer.csv`
+- `ImmunoStruct_CEDAR_data_wildtype.csv`
+- `ImmunoStruct_clinical_data.csv`
+- `ImmunoStruct_clinical_data_survival.csv`
+- `HLA_allele_sequences.csv`
 
-Additionally, ensure you have these folders:
-- `graph_pyg_Cancer`
-- `graph_pyg_IEDB`
 
 **Generate PyG graph files:**
 
 These PyG graph files can be generated using the below command from the corresponding AlphaFold folders.
 ```sh
-python immunostruct/preprocessing/cancer_graph_construction_new_KBG.py
+cs immunostruct/preprocessing
+python step1_sequence_to_pdb.py
+python step2_pdb_to_graph.py
 ```
 
 
@@ -246,6 +248,17 @@ python immunostruct/preprocessing/cancer_graph_construction_new_KBG.py
    python train_PropIEDB_PropCancer_ImmunoCancer.py --full-sequence --model StructureModel --wandb-username YOUR_WANDB_USERNAME
    ```
 
+3. **Our main experiments**
+   ```sh
+   # IEDB training
+   python train_IEDB_wFT.py --full-sequence --model HybridModelv2 --wandb-username immunoteam --sequence-loss --seed 1
+
+   # Cancer training
+   python infer_IEDB_or_Cancer.py --model HybridModelv2_Comparative --full-sequence --infer_dataset Cancer --comparative --use-wt-for-downstream --seed 1
+
+   # IEDB or Cancer inference
+   python infer_IEDB_or_Cancer.py --model HybridModelv2 --model-dir /path/to/model --model-filename MODEL_FILENAME --full-sequence --infer_dataset IEDB
+   ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

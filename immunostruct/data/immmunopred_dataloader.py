@@ -74,7 +74,7 @@ class ImmunoPredDataset(Dataset):
 
     def transform(self):
         return RandomRotation()
-    
+
     def mask_sequence(self, full, peptide, padding_char):
         length = len(full)- len(peptide)
 
@@ -212,7 +212,7 @@ class ImmunoPredDatasetComparative(Dataset):
 
     def denormalize(self, output):
         return output / 2 * (self.max - self.min) + (self.max + self.min)/2
-    
+
     def mask_sequence(self, full, full_wt, peptide, peptide_wt, padding_char):
         assert len(full) == len(full_wt)
         assert len(peptide) == len(peptide_wt)
@@ -245,7 +245,7 @@ class ImmunoPredDatasetComparative(Dataset):
         for i in random.sample(inds_wt, self.structure_pad_count):
             if torch.sum(graph_wt.ndata['x'][i,:-3]) > 1: # self supervision structure
                 continue
-            else:      
+            else:
                 graph_wt.ndata['x'][i,:-3] = torch.full(graph_wt.ndata['x'][i,:-3].shape, 0)
 
         return graph, graph_wt
@@ -299,8 +299,8 @@ if __name__ == '__main__':
 
     dataset = ImmunoPredDataset(config,
                                 ROOT_DIR + 'data/cancer_graph_pyg/',
-                                ROOT_DIR + 'data/cedar_data_final_with_mprop1_mprop2_v2.txt',
-                                ROOT_DIR + 'data/HLA_27_seqs_csv.csv', binary=False)
+                                ROOT_DIR + 'data/ImmunoStruct_CEDAR_data_cancer.csv',
+                                ROOT_DIR + 'data/HLA_allele_sequences.csv', binary=False)
 
     print(dataset[0], dataset[-1])
     generator1 = torch.Generator().manual_seed(42)

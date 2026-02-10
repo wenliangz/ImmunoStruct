@@ -24,7 +24,7 @@ if __name__ == "__main__":
     parser.add_argument("--gat-hidden-channels", default=64, type=int)
     parser.add_argument("--property-embedding-dim", default=8, type=int)
     parser.add_argument("--self-supervision", action="store_true")
-    
+
     # Dataset parameters
     parser.add_argument("--feature-size", default=23, type=int)
     parser.add_argument("--coord-size", default=3, type=int)
@@ -34,10 +34,10 @@ if __name__ == "__main__":
     parser.add_argument("--batch-size", default=128, type=int)
     parser.add_argument("--num-workers", default=4, type=int)
     parser.add_argument("--seed", default=1, type=int)
-    
+
     # Data paths
     parser.add_argument("--graph-dir", default="$ROOT/data/graph_pyg/", type=str)
-    parser.add_argument("--seq-path", default="$ROOT/data/hadrup_cancer_df_29K.txt", type=str)
+    parser.add_argument("--seq-path", default="$ROOT/data/ImmunoStruct_clinical_data.csv", type=str)
 
     # Save paths
     parser.add_argument("--figure-save-dir", default="$ROOT/figures/ImmunoCancer/", type=str)
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     seed_everything(config.seed)
     generator = torch.Generator().manual_seed(config.seed)
 
-    
+
     print('Loading Model')
     # Define model (adjust parameters as needed)
     input_dim = 283 * 21 if config.full_sequence else 11 * 21
@@ -81,17 +81,17 @@ if __name__ == "__main__":
                                        seq_path=config.seq_path)
 
 
-    clinical_dataset = SplitDataset(clinical_dataset, "inference", binary=True, full=config.full_sequence, 
-                                    comparative=True, 
+    clinical_dataset = SplitDataset(clinical_dataset, "inference", binary=True, full=config.full_sequence,
+                                    comparative=True,
                                     return_amino_acid=False)
-                                    
+
     clinical_loader = GraphDataLoader(clinical_dataset, batch_size=config.batch_size, collate_fn=collate, shuffle=False, num_workers=config.num_workers)
 
 
     print('running inference')
 
-    test_stats = inference_clinical_only(config, 
-                                        model, 
+    test_stats = inference_clinical_only(config,
+                                        model,
                                         device,
                                         clinical_loader=clinical_loader,
                                         fig_save_folder=os.path.join(config.figure_save_dir, "results"))

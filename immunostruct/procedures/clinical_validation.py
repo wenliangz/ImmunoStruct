@@ -35,8 +35,8 @@ def clinical_pvalues(predicted_probs_clinical, fig_save_path=None):
     else:
         raise NotImplementedError(f"Cannot support the current platform: {current_platform}.")
 
-    seq_df = pd.read_table(os.path.join(ROOT_DIR, 'data', 'hadrup_cancer_df_29K.txt'))
-    clin_df = pd.read_table(os.path.join(ROOT_DIR, 'data', 'All_samples_clinical.txt'))
+    seq_df = pd.read_csv(os.path.join(ROOT_DIR, 'data', 'ImmunoStruct_clinical_data.csv'))
+    clin_df = pd.read_csv(os.path.join(ROOT_DIR, 'data', 'ImmunoStruct_clinical_data_survival.csv'))
 
     seq_df['patient_ID'] = seq_df['patient'].apply(convert_patient_code)
 
@@ -65,7 +65,7 @@ def clinical_pvalues(predicted_probs_clinical, fig_save_path=None):
     # Merge this new ImmunoStruct_predicted_load back into the main clinical dataframe
     clin_df['ImmunoStruct_predicted_load'] = immunostruct_load_df['ImmunoStruct_predicted'].tolist()
     clin_df.to_csv(os.path.join(ROOT_DIR, 'results', 'clinical_results.csv'))
-    
+
     # Define a threshold to split ImmunoStruct_predicted_load into low and high groups
     low_group_threshold = np.percentile(clin_df['ImmunoStruct_predicted_load'], 50)
     high_group_threshold = np.percentile(clin_df['ImmunoStruct_predicted_load'], 50)

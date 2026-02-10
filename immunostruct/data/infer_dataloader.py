@@ -198,7 +198,7 @@ class ClinicalDataset(Dataset):
 
         encoded_full_seq, encoded_peptide_seq, peptide_property, dgl_graphs = [], [], [], []
 
-        seq_df = pd.read_table(self.seq_path)
+        seq_df = pd.read_csv(self.seq_path)
 
         first_valid_pep_pair = None
         for _, df_entry in seq_df.iterrows():

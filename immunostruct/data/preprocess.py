@@ -43,7 +43,7 @@ def preprocess_graphs(directory):
     return new_graphs
 
 def preprocess_properties(table, cancer=False):
-    expanded_df = pd.read_table(table)
+    expanded_df = pd.read_csv(table)
 
     if cancer:
         # used for cancer dataset
@@ -65,8 +65,8 @@ def preprocess_properties(table, cancer=False):
 
 
 def preprocess_properties_cancer_wt(table_cancer, table_wt):
-    expanded_df_cancer = pd.read_table(table_cancer)
-    expanded_df_wt = pd.read_table(table_wt)
+    expanded_df_cancer = pd.read_csv(table_cancer)
+    expanded_df_wt = pd.read_csv(table_wt)
 
     expanded_df_cancer = expanded_df_cancer.dropna(subset='foreign')
     expanded_df_cancer[['allele1', 'allele2']] = expanded_df_cancer['allele'].str.split("-", expand=True)
@@ -302,7 +302,7 @@ def preprocess_sequence_graph_cancer_wt(combined_df, name_mapper_cancer, name_ma
 def preprocess_sequence_graph_clinical(graph_directory, seq_path):
     graphs = preprocess_graphs(graph_directory)
 
-    seq_df = pd.read_table(seq_path)
+    seq_df = pd.read_csv(seq_path)
     name_mapper = {}
     for _, row in seq_df.iterrows():
         pep = row['mut_pep']
