@@ -242,7 +242,10 @@ Before installation, ensure you have:
 
 We have provided the PyG graphs on huggingface, so you just need to download them and put them under `data` folder.
 
-Just FYI, they are generated using a three-step process under `immunostruct/preprocessing`. They are available in case you ever need to run some or all of these procedures.
+<details>
+  <summary>How the PyG graphs are generated (optional)</summary>
+
+The PyG graphs are generated using a three-step process under `immunostruct/preprocessing`. The generation scripts are available in case you ever need to run some or all of them.
 ```sh
 # Step 1. AlphaFold2 (sequences in csv files to structures in PDB files).
 # Download colabfold and REMEMBER where it is downloaded to.
@@ -318,6 +321,8 @@ python step3_pdb_to_pyg.py \
     --output-dir ../../data/graph_pyg_clinical/
 ```
 
+</details>
+
 
 ### Training and Testing
 
@@ -326,6 +331,8 @@ python step3_pdb_to_pyg.py \
    Create a project on [Weights & Biases](https://wandb.ai/home) matching your project name.
 
 2. **Run Experiments**
+
+    NOTE: these are already deprecated. See `immunostruct/old_scripts`.
    ```sh
    # HybridModelv2 with full sequence and sequence loss
    python train_PropIEDB_PropCancer_ImmunoCancer.py --full-sequence --sequence-loss --model HybridModelv2 --wandb-username YOUR_WANDB_USERNAME
@@ -344,6 +351,9 @@ python step3_pdb_to_pyg.py \
    ```
 
 3. **Our main experiments**
+
+These are examples for running the training and inference.
+
    ```sh
    # IEDB training
    python train_IEDB_wFT.py --full-sequence --model HybridModelv2 --wandb-username immunoteam --sequence-loss --seed 1
