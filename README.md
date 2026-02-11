@@ -245,7 +245,6 @@ We have provided the PyTorch Geometric (PyG) graphs on huggingface. You just nee
 <details>
   <summary>How the PyG graphs are generated</summary>
 
-<br>
 The PyG graphs are generated using a three-step process under `immunostruct/preprocessing`. The generation scripts are available in case you ever need to run some or all of them.
 ```sh
 # Step 1. AlphaFold2 (sequences in csv files to structures in PDB files).
