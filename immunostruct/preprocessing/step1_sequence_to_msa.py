@@ -59,7 +59,7 @@ def main(args):
             continue
 
         I = cf_af.prep_inputs(full_sequence_folding, full_sequence_name, args.homooligomer, output_dir=output_dir, clean=False)
-        print(f"\nPrepped inputs for {full_sequence_name}.", flush=True)
+        print(f"\nPrepared inputs for {full_sequence_name}.", flush=True)
         cf_af.prep_msa(
             I,
             msa_method=args.msa_method,

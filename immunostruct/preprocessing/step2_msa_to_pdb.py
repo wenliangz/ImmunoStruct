@@ -106,13 +106,13 @@ def main(args):
             continue
 
         I = cf_af.prep_inputs(full_sequence_folding, full_sequence_name, args.homooligomer, output_dir=output_dir, clean=False)
-        print(f"\nPrepped inputs for {full_sequence_name}.", flush=True)
+        print(f"\nPrepared inputs for {full_sequence_name}.", flush=True)
         mod_I = cf_af.prep_msa(
             I,
             msa_method="precomputed",
             precomputed=msa_path,
         )
-        print(f"\nPrepped MSA for {full_sequence_name}.", flush=True)
+        print(f"\nPrepared MSA for {full_sequence_name}.", flush=True)
 
         feature_dict = cf_af.prep_feats(mod_I, clean=False)
         opt = _build_options(feature_dict, args)
