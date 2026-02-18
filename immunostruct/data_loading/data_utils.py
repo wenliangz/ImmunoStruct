@@ -98,17 +98,17 @@ def duplicate_check(encoded_full_sequence, protein_reg_values, dgl_filtered_grap
     for n, (a, b) in enumerate(zip(encoded_full_sequence, protein_reg_values)):
         overlap = (tuple(map(tuple, a)), b)
         if overlap in cache:
-            dupe+=1
+            dupe += 1
             if (dgl_filtered_graphs[cache[overlap]].num_nodes() == dgl_filtered_graphs[n].num_nodes() and
                 dgl_filtered_graphs[cache[overlap]].num_edges() == dgl_filtered_graphs[n].num_edges() and
                 dgl_filtered_graphs[cache[overlap]].ndata['x'].tolist() == dgl_filtered_graphs[n].ndata['x'].tolist() and
                 dgl_filtered_graphs[cache[overlap]].edata['edge_attr'].tolist() == dgl_filtered_graphs[n].edata['edge_attr'].tolist() and
                 dgl_filtered_graphs[cache[overlap]].edges()[0].tolist() == dgl_filtered_graphs[n].edges()[0].tolist()):
-                double_dupe+=1
+                double_dupe += 1
                 to_remove.add(n)
         else:
             cache[overlap] = n
-    print("Duplicates:", dupe, double_dupe)
+    print(f"Removing duplicates. Duplicated (sequence + label): {dupe}, Duplicated (sequence + structure + label): {double_dupe}.")
 
 def dedupe(encoded_sequences, protein_reg_values, protein_immuno_values, protein_reg_values_f, dgl_filtered_graphs):
     to_remove = set()
@@ -119,17 +119,17 @@ def dedupe(encoded_sequences, protein_reg_values, protein_immuno_values, protein
     for n, (a, b) in enumerate(zip(encoded_sequences, protein_reg_values)):
         overlap = (tuple(map(tuple, a)), b)
         if overlap in cache:
-            dupe+=1
+            dupe += 1
             if (dgl_filtered_graphs[cache[overlap]].num_nodes() == dgl_filtered_graphs[n].num_nodes() and
                 dgl_filtered_graphs[cache[overlap]].num_edges() == dgl_filtered_graphs[n].num_edges() and
                 dgl_filtered_graphs[cache[overlap]].ndata['x'].tolist() == dgl_filtered_graphs[n].ndata['x'].tolist() and
                 dgl_filtered_graphs[cache[overlap]].edata['edge_attr'].tolist() == dgl_filtered_graphs[n].edata['edge_attr'].tolist() and
                 dgl_filtered_graphs[cache[overlap]].edges()[0].tolist() == dgl_filtered_graphs[n].edges()[0].tolist()):
-                double_dupe+=1
+                double_dupe += 1
                 to_remove.add(n)
         else:
             cache[overlap] = n
-    print("Duplicates:", dupe, double_dupe)
+    print(f"Removing duplicates. Duplicated (sequence + label): {dupe}, Duplicated (sequence + structure + label): {double_dupe}.")
 
     new_encoded_sequences = []
     new_protein_reg_values = []

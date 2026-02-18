@@ -35,19 +35,19 @@ class ImmunoPredDataset(Dataset):
         self.normalize()
 
     def organize(self, name_mapper, encoded_full_sequence_map, encoded_peptide_map, biochem_property_dict, immunogenicity_dict, foreignness_dict, graph_mapper):
-        key_fullseq_list = [(key, mhc_seq + pep_seq) for key, (pep_seq, mhc_seq) in name_mapper.items()]
+        key_list = list(name_mapper.keys())
 
-        encoded_full_sequence = [encoded_full_sequence_map[key] for key, _ in key_fullseq_list]
-        encoded_peptide_sequence = [encoded_peptide_map[key] for key, _ in key_fullseq_list]
+        encoded_full_sequence = [encoded_full_sequence_map[k] for k in key_list]
+        encoded_peptide_sequence = [encoded_peptide_map[k] for k in key_list]
 
-        biochem_property_values = [biochem_property_dict[key] for key, _ in key_fullseq_list]
-        immunogenicity_values = [immunogenicity_dict[key] for key, _ in key_fullseq_list]
+        biochem_property_values = [biochem_property_dict[k] for k in key_list]
+        immunogenicity_values = [immunogenicity_dict[k] for k in key_list]
 
         class_weights = Counter(immunogenicity_values)
         self.class_weights = class_weights
 
-        foreignness_values = [foreignness_dict[key] for key, _ in key_fullseq_list]
-        dgl_filtered_graphs = [graph_mapper[key] for key, _ in key_fullseq_list]
+        foreignness_values = [foreignness_dict[k] for k in key_list]
+        dgl_filtered_graphs = [graph_mapper[k] for k in key_list]
 
         duplicate_check(encoded_full_sequence, biochem_property_values, dgl_filtered_graphs)
 

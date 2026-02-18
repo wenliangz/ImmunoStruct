@@ -133,7 +133,7 @@ def preprocess_hla(mhc_pep_pair_list, hla_path):
         hla_code, pep_seq = mhc_pep_pair.split("_")
         assert hla_code.startswith("HLA-")
         mhc_seq = hla_dict_true[hla_code]
-        name_mapper[mhc_pep_pair] = (pep_seq, mhc_seq)
+        name_mapper[mhc_pep_pair] = (mhc_seq, pep_seq)
 
     return name_mapper
 
@@ -295,9 +295,9 @@ def preprocess_sequence_graph_clinical(graph_directory, seq_path):
     for _, row in seq_df.iterrows():
         pep_seq = row['mut_pep']
         hla_code = row['allele']
-        hla_seq = row['hla_seq']
+        mhc_seq = row['hla_seq']
         mhc_pep_pair = hla_code + "_" + pep_seq
-        name_mapper[mhc_pep_pair] = (hla_seq, pep_seq)
+        name_mapper[mhc_pep_pair] = (mhc_seq, pep_seq)
 
     # Step 1. Remove peptide-MHC pairs that do not have graphs.
     mhc_pep_pair_with_graphs = set([x.name for x in all_graphs])
@@ -338,10 +338,10 @@ def preprocess_sequence(name_mapper, amino_acids, padding_char):
     max_full_length = max(len(pep_mhc_pair[0]) + len(pep_mhc_pair[1]) for _, pep_mhc_pair in name_mapper.items())
     max_pep_length = max(len(pep_mhc_pair[0]) for _, pep_mhc_pair in name_mapper.items())
 
-    name_mapper = {key: (pad_peptide_sequence(pep_seq, max_pep_length, padding_char),
-                         pad_peptide_sequence(mhc_seq + pep_seq, max_full_length, padding_char)) for key, (pep_seq, mhc_seq) in name_mapper.items()}
+    pad_seq_mapper = {key: (pad_peptide_sequence(pep_seq, max_pep_length, padding_char),
+                            pad_peptide_sequence(mhc_seq + pep_seq, max_full_length, padding_char)) for key, (mhc_seq, pep_seq) in name_mapper.items()}
 
-    encoded_full_sequence_map = {key: one_hot_encode_sequence(padded_full_seq, amino_acids, padding_char) for key, (_, padded_full_seq) in name_mapper.items()}
-    encoded_peptide_map = {key: one_hot_encode_sequence(padded_pep_seq, amino_acids, padding_char) for key, (padded_pep_seq, _) in name_mapper.items()}
+    encoded_full_sequence_map = {key: one_hot_encode_sequence(padded_full_seq, amino_acids, padding_char) for key, (_, padded_full_seq) in pad_seq_mapper.items()}
+    encoded_peptide_map = {key: one_hot_encode_sequence(padded_pep_seq, amino_acids, padding_char) for key, (padded_pep_seq, _) in pad_seq_mapper.items()}
 
     return encoded_full_sequence_map, encoded_peptide_map

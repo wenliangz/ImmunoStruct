@@ -89,9 +89,9 @@ if __name__ == "__main__":
     print('running inference')
 
     test_stats = inference_clinical_only(config,
-                                        model,
-                                        device,
-                                        clinical_loader=clinical_loader,
-                                        fig_save_folder=os.path.join(config.figure_save_dir, "results"))
+                                         model,
+                                         device,
+                                         clinical_loader=clinical_loader,
+                                         fig_save_folder=os.path.join(config.figure_save_dir, "results"))
 
     print('DONE')

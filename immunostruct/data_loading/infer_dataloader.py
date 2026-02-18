@@ -29,7 +29,7 @@ class ImmunoPredInferDataset(Dataset):
         self.normalize()
 
     def organize(self, name_mapper, encoded_full_sequence_map, encoded_peptide_map, biochem_property_dict, immunogenicity_dict, foreignness_dict, graph_mapper):
-        key_fullseq_list = [(key, mhc_seq + pep_seq) for key, (pep_seq, mhc_seq) in name_mapper.items()]
+        key_fullseq_list = [(key, mhc_seq + pep_seq) for key, (mhc_seq, pep_seq) in name_mapper.items()]
 
         raw_full_sequence = [full_seq for _, full_seq in key_fullseq_list]
         encoded_full_sequence = [encoded_full_sequence_map[key] for key, _ in key_fullseq_list]
@@ -116,7 +116,7 @@ class ImmunoPredInferDatasetComparative(Dataset):
         peptide_property_wt, immunogenicity_wt, foreignness_wt = [], [], []
         dgl_graphs_cancer, dgl_graphs_wt = [], []
 
-        key_fullseq_list = [(key, mhc_seq + pep_seq) for key, (pep_seq, mhc_seq) in name_mapper_cancer.items()]
+        key_fullseq_list = [(key, mhc_seq + pep_seq) for key, (mhc_seq, pep_seq) in name_mapper_cancer.items()]
         raw_full_sequence = [full_seq for _, full_seq in key_fullseq_list]
 
         for _, df_entry in self.combined_df.iterrows():

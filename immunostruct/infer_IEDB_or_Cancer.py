@@ -13,8 +13,8 @@ from procedures import inference, inference_comparative
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Entry point.")
     # Model parameters
-    parser.add_argument("--model", default="StructureModel", type=str)
     parser.add_argument("--model-path", default="$ROOT/results/PropIEDB_PropCancer_ImmunoCancer/HybridModel_Comparative-wtds_False-lr_pt_0.001-lr_ft_0.0001-cc_0.01-ssl_False-ep_40-bs_128-fseq_True-seql_False-fs_23-cs_3-seed_1_finetune.pt", type=str)
+    parser.add_argument("--model", default="HybridModel_Comparative", type=str)
     parser.add_argument("--use-wt-for-downstream", action='store_true')
 
     # Dataset parameters
@@ -61,23 +61,23 @@ if __name__ == "__main__":
     dataset_ft = None
     if config.infer_dataset == "IEDB":
         dataset_ft = ImmunoPredInferDataset(config,
-                                                graph_directory=config.graph_dir_IEDB,
-                                                property_path=config.property_path_IEDB,
-                                                hla_path=config.hla_path)
+                                            graph_directory=config.graph_dir_IEDB,
+                                            property_path=config.property_path_IEDB,
+                                            hla_path=config.hla_path)
     else:
         if config.comparative:
             dataset_ft = ImmunoPredInferDatasetComparative(config,
-                                                            graph_directory_cancer=config.graph_dir_cancer,
-                                                            property_path_cancer=config.property_path_cancer,
-                                                            graph_directory_wt=config.graph_dir_wildtype,
-                                                            property_path_wt=config.property_path_wildtype,
-                                                            hla_path=config.hla_path)
+                                                           graph_directory_cancer=config.graph_dir_cancer,
+                                                           property_path_cancer=config.property_path_cancer,
+                                                           graph_directory_wt=config.graph_dir_wildtype,
+                                                           property_path_wt=config.property_path_wildtype,
+                                                           hla_path=config.hla_path)
 
         else:
             dataset_ft = ImmunoPredInferDataset(config,
-                                                    graph_directory=config.graph_dir_cancer,
-                                                    property_path=config.property_path_cancer,
-                                                    hla_path=config.hla_path)
+                                                graph_directory=config.graph_dir_cancer,
+                                                property_path=config.property_path_cancer,
+                                                hla_path=config.hla_path)
 
     _, _, test_dataset_ft = torch.utils.data.random_split(dataset_ft, [0.8, 0.1, 0.1], generator)
 
