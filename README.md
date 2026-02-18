@@ -553,25 +553,22 @@ The PyG graphs are generated using a three-step process under `immunostruct/prep
 
     ```sh
     # IEDB training
-    python train_IEDB_wFT.py --full-sequence --model HybridModelv2 --sequence-loss --seed 1 --wandb-username immunoteam
+    python train_IEDB_wFT.py --model HybridModelv2 --sequence-loss --full-sequence --seed 1 --wandb-username immunoteam
 
     # CEDAR training
-    python train_Cancer_wFT.py --model HybridModelv2_Comparative --sequence-loss --full-sequence --infer_dataset Cancer --comparative --use-wt-for-downstream --seed 1 --wandb-username immunoteam
-
-    # IEDB or CEDAR inference
-    python infer_IEDB_or_Cancer.py --model HybridModelv2 --model-path /path/to/model --full-sequence --infer_dataset IEDB --wandb-username immunoteam
+    python train_CEDAR_wFT.py --model HybridModelv2_Comparative --sequence-loss --full-sequence --comparative --use-wt-for-downstream --seed 1 --wandb-username immunoteam
     ```
 
     For running inference using the models we provide:
     ```sh
     # IEDB inference
-    python infer_IEDB_or_Cancer.py --model HybridModelv2 --model-path ../results/IEDB_model.pt --full-sequence --infer_dataset IEDB
+    python infer_IEDB_or_CEDAR.py --infer_dataset IEDB --model HybridModelv2 --model-path ../results/IEDB_model.pt --full-sequence
 
     # CEDAR inference
-    python infer_IEDB_or_Cancer.py --model HybridModel_Comparative --model-path ../results/CEDAR_model.pt --full-sequence --infer_dataset Cancer
+    python infer_IEDB_or_CEDAR.py --infer_dataset CEDAR --model HybridModel_Comparative --model-path ../results/CEDAR_model.pt --full-sequence --use-wt-for-downstream
 
     # Clinical inference
-    python infer_clinical_only.py --model HybridModel_Comparative --model-path ../results/CEDAR_model.pt --full-sequence
+    python infer_clinical_only.py --model HybridModel_Comparative --model-path ../results/CEDAR_model.pt --full-sequence --use-wt-for-downstream
     ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

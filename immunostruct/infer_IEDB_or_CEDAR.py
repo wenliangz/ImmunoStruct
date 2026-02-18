@@ -21,7 +21,7 @@ if __name__ == "__main__":
     parser.add_argument("--feature-size", default=23, type=int)
     parser.add_argument("--coord-size", default=3, type=int)
     parser.add_argument("--full-sequence", action="store_true")
-    parser.add_argument("--infer_dataset", default="IEDB", type=str) # IEDB or Cancer
+    parser.add_argument("--infer_dataset", default="IEDB", type=str) # IEDB or CEDAR
     parser.add_argument("--comparative", action="store_true") # whether dataset includes comparative data
 
     # Training parameters

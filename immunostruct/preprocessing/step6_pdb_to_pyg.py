@@ -131,7 +131,7 @@ def main(args):
             # Save the PyTorch graph to a file if desired.
             torch.save(g_pyg, save_filename)
 
-            print('done creating graph {}'.format(filename_no_extension))
+            print('done creating graph {}'.format(filename_no_extension), flush=True)
 
             # Delete temporary variables to free memory.
             del g, g2, g_pyg
