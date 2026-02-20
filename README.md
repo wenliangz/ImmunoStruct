@@ -6,10 +6,11 @@
   <h1><img src="assets/ImmunoStruct_cover.png" width="200"><br><code>ImmunoStruct</code></h1>
   <h3>ImmunoStruct enables multimodal deep learning for immunogenicity prediction</h3>
 
-  [![nature](https://img.shields.io/badge/nature_machine_intelligence-gold)](https://www.nature.com/articles/s42256-025-01163-y)
+  [![nature](https://img.shields.io/badge/nature-machine_intelligence-gold)](https://www.nature.com/articles/s42256-025-01163-y)
   [![PDF](https://img.shields.io/badge/PDF-DADBDD)](https://www.nature.com/articles/s42256-025-01163-y.pdf)
   ![Python](https://img.shields.io/badge/Python-3.8-3776ab)
   ![PyTorch](https://img.shields.io/badge/PyTorch-2.1.2-ee4c2c)
+  [![Huggingface](https://img.shields.io/badge/Dataset-ImmunoStruct-orange)](https://huggingface.co/datasets/ChenLiu1996/ImmunoStruct)
   [![GitHub Stars](https://img.shields.io/github/stars/KrishnaswamyLab/ImmunoStruct.svg?style=social\&label=Stars)](https://github.com/KrishnaswamyLab/ImmunoStruct)
   <br>[![LinkedIn](https://img.shields.io/badge/LinkedIn-Kevin-blue)](https://www.linkedin.com/in/kevin-bijan-givechian-phd-36467ba3/)
   [![LinkedIn](https://img.shields.io/badge/LinkedIn-Joao-blue)](https://www.linkedin.com/in/joao-felipe-rocha/)
@@ -203,8 +204,7 @@ Before installation, ensure you have:
    ```sh
    python -m pip install graphein[extras]
    python -m pip install lifelines
-   python -m pip install -U phate
-   python -m pip install multiscale-phate
+   python -m pip install huggingface_hub
    ```
 
 9. **Set up environment variables (if needed)**
@@ -231,7 +231,14 @@ Before installation, ensure you have:
 
 ### Data Preparation
 
-1. Make sure the following files are in the `data` folder:
+1. Download the dataset from huggingface.
+    ```
+    conda activate immuno
+    cd ./data/
+    hf download ChenLiu1996/ImmunoStruct --repo-type dataset --local-dir ./
+    ```
+
+2. Make sure the following files are in the `data` folder:
     - `ImmunoStruct_IEDB_data.csv`
     - `ImmunoStruct_CEDAR_data_cancer.csv`
     - `ImmunoStruct_CEDAR_data_wildtype.csv`
@@ -239,13 +246,21 @@ Before installation, ensure you have:
     - `ImmunoStruct_clinical_data_survival.csv`
     - `HLA_allele_sequences.csv`
 
-2. Download the following folders from huggingface and place them in the `data` folder:
+3. Unzip the graph structure PyTorch files.
+    ```
+    unzip graph_pyg_IEDB.zip
+    unzip graph_pyg_CEDAR_cancer.zip
+    unzip graph_pyg_CEDAR_wildtype.zip
+    unzip graph_pyg_clinical.zip
+    ```
+
+   Now the following folders should be under the `data` folder:
     - `graph_pyg_IEDB`
     - `graph_pyg_CEDAR_cancer`
     - `graph_pyg_CEDAR_wildtype`
     - `graph_pyg_clinical`
 
-3. If you want to customize the graph-building logic, you can alternatively download the graph structure PDB files produced by AlphaFold2, which we also made available on huggingface.
+4. If you want to customize the graph-building logic, the graph structure PDB files produced by AlphaFold2 are already made available by the same huggingface download command. Unzip the corresponding zip files and you will have the following folders.
     - `alphafold2_pdb_IEDB`
     - `alphafold2_pdb_CEDAR_cancer`
     - `alphafold2_pdb_CEDAR_wildtype`
@@ -526,6 +541,11 @@ The PyG graphs are generated using a three-step process under `immunostruct/prep
 
 
 ### Training and Testing
+0. **Activate the environment**
+    ```sh
+    conda activate immuno
+    export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+    ```
 
 1. **Set up Weights & Biases**
 

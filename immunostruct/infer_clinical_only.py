@@ -9,9 +9,6 @@ from utils import seed_everything, update_paths
 from procedures import inference_clinical_only
 
 if __name__ == "__main__":
-    print('STARTING')
-    print('REMEMBER TO: export LD_LIBRARY_PATH=/vast/palmer/pi/krishnaswamy_smita/jcr222/conda/conda_envs/immuno/lib:$LD_LIBRARY_PATH')
-
     parser = argparse.ArgumentParser(description="Entry point.")
     # Model parameters
     parser.add_argument("--model-path", default="$ROOT/results/HybridModel_Comparative-wtds_False-lr_pt_0.001-lr_ft_0.0001-cc_0.01-ssl_False-ep_40-bs_128-fseq_True-seql_False-fs_23-cs_3-seed_1_finetune.pt")
