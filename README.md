@@ -140,16 +140,9 @@ To get ImmunoStruct up and running locally, follow these steps.
 ### Pre-requisites
 
 Before installation, ensure you have:
-* Python 3.8+
 * CUDA-compatible GPU (recommended)
 * Conda package manager
 * Weights & Biases account for experiment tracking
-
-### Dependencies
-- python 3.8
-- torch 2.1.2
-- dgl
-- torch_geometric 2.5.3
 
 ### Installation
 
