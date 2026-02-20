@@ -5,10 +5,10 @@
 <div align="center">
   <h1><img src="assets/ImmunoStruct_cover.png" width="200"><br><code>ImmunoStruct</code></h1>
   <h3>ImmunoStruct enables multimodal deep learning for immunogenicity prediction</h3>
-  
-  [![nature](https://img.shields.io/badge/nature-machine_intelligence-gold)](https://www.nature.com/articles/s42256-025-01163-y)
+
+  [![nature](https://img.shields.io/badge/nature_machine_intelligence-gold)](https://www.nature.com/articles/s42256-025-01163-y)
   [![PDF](https://img.shields.io/badge/PDF-DADBDD)](https://www.nature.com/articles/s42256-025-01163-y.pdf)
-  ![Python](https://img.shields.io/badge/Python-3.10-3776ab)
+  ![Python](https://img.shields.io/badge/Python-3.8-3776ab)
   ![PyTorch](https://img.shields.io/badge/PyTorch-2.1.2-ee4c2c)
   [![GitHub Stars](https://img.shields.io/github/stars/KrishnaswamyLab/ImmunoStruct.svg?style=social\&label=Stars)](https://github.com/KrishnaswamyLab/ImmunoStruct)
   <br>[![LinkedIn](https://img.shields.io/badge/LinkedIn-Kevin-blue)](https://www.linkedin.com/in/kevin-bijan-givechian-phd-36467ba3/)
@@ -139,13 +139,13 @@ To get ImmunoStruct up and running locally, follow these steps.
 ### Pre-requisites
 
 Before installation, ensure you have:
-* Python 3.10+
+* Python 3.8+
 * CUDA-compatible GPU (recommended)
 * Conda package manager
 * Weights & Biases account for experiment tracking
 
 ### Dependencies
-- python 3.10
+- python 3.8
 - torch 2.1.2
 - dgl
 - torch_geometric 2.5.3
@@ -160,14 +160,14 @@ Before installation, ensure you have:
 
 2. **Create and activate conda environment**
    ```sh
-   conda create --name immuno python=3.10 -c anaconda -c conda-forge
+   conda create --name immuno python=3.8 -c anaconda -c conda-forge -y
    conda activate immuno
    ```
 
 3. **Install core dependencies**
    ```sh
-   conda install cudatoolkit=11.2 wandb pydantic -c conda-forge
-   conda install scikit-image pillow matplotlib seaborn tqdm -c anaconda
+   conda install cudatoolkit=11.2 wandb pydantic -c conda-forge -y
+   conda install scikit-image pillow matplotlib seaborn tqdm -c anaconda -y
    ```
 
 4. **Install PyTorch**
@@ -183,10 +183,23 @@ Before installation, ensure you have:
 
 6. **Install PyTorch Geometric and related packages**
    ```sh
-   python -m pip install torch-scatter==2.1.2+pt21cu118 torch-sparse==0.6.18+pt21cu118 torch-cluster==1.6.3+pt21cu118 torch-spline-conv==1.2.2+pt21cu118 torch_geometric==2.5.3 numpy==1.26.3 -f https://data.pyg.org/whl/torch-2.1.2+cu118.html
+   python -m pip install torch-scatter==2.1.2+pt21cu118 torch-sparse==0.6.18+pt21cu118 torch-cluster==1.6.3+pt21cu118 torch-spline-conv==1.2.2+pt21cu118 torch_geometric==2.5.3 numpy==1.21.1 -f https://data.pyg.org/whl/torch-2.1.2+cu118.html
    ```
 
-7. **Install additional packages**
+7. **Install AlphaFold2-related packages**
+   ```sh
+   python -m pip install jax==0.2.25 jaxlib==0.1.69+cuda111 -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+   python -m pip install "alphafold-colabfold==2.0.0" "colabfold==1.2.0" "dm-haiku==0.0.4"
+   python -m pip install "biopython==1.78"
+   ```
+
+   Go to /path/to/environment/lib/python3.8/site-packages/jaxlib/xla_client.py: change `np.object` to `object`.
+
+   Go to /path/to/environment/lib/python3.8/site-packages/alphafold/common/residue_constants.py: change `np.int` to `np.int32`.
+
+   Go to /path/to/environment/lib/python3.8/site-packages/alphafold/data/templates.py: change `np.object` to `object`.
+
+8. **Install additional packages**
    ```sh
    python -m pip install graphein[extras]
    python -m pip install lifelines
@@ -194,10 +207,22 @@ Before installation, ensure you have:
    python -m pip install multiscale-phate
    ```
 
-8. **Set up environment variables (if needed)**
+9. **Set up environment variables (if needed)**
    ```sh
    export LD_LIBRARY_PATH=/path/to/conda/envs/immuno/lib:$LD_LIBRARY_PATH
    ```
+
+10. Another environment for obtaining MSAs locally.
+    ```sh
+    conda create --name local_msa python=3.10 -c anaconda -c conda-forge -y
+    conda activate local_msa
+    conda install cudatoolkit=11.2 wandb pydantic -c conda-forge -y
+    conda install scikit-image pillow matplotlib seaborn tqdm -c anaconda -y
+    python -m pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu118
+    pip install colabfold[alphafold]==1.5.5
+    pip install jax==0.4.23 jaxlib==0.4.23+cuda11.cudnn86 -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+    conda install -c bioconda mmseqs2 -y
+    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -206,21 +231,295 @@ Before installation, ensure you have:
 
 ### Data Preparation
 
-Place the following files in the `data/` folder:
-- `cedar_data_final_with_mprop1_mprop2_v2.txt`
-- `complete_score_Mprops_1_2_smoothed_sasa_v2.txt`
-- `HLA_27_seqs_csv.csv`
+1. Make sure the following files are in the `data` folder:
+    - `ImmunoStruct_IEDB_data.csv`
+    - `ImmunoStruct_CEDAR_data_cancer.csv`
+    - `ImmunoStruct_CEDAR_data_wildtype.csv`
+    - `ImmunoStruct_clinical_data.csv`
+    - `ImmunoStruct_clinical_data_survival.csv`
+    - `HLA_allele_sequences.csv`
 
-Additionally, ensure you have these folders:
-- `graph_pyg_Cancer`
-- `graph_pyg_IEDB`
+2. Download the following folders from huggingface and place them in the `data` folder:
+    - `graph_pyg_IEDB`
+    - `graph_pyg_CEDAR_cancer`
+    - `graph_pyg_CEDAR_wildtype`
+    - `graph_pyg_clinical`
 
-**Generate PyG graph files:**
+3. If you want to customize the graph-building logic, you can alternatively download the graph structure PDB files produced by AlphaFold2, which we also made available on huggingface.
+    - `alphafold2_pdb_IEDB`
+    - `alphafold2_pdb_CEDAR_cancer`
+    - `alphafold2_pdb_CEDAR_wildtype`
+    - `alphafold2_pdb_clinical`
 
-These PyG graph files can be generated using the below command from the corresponding AlphaFold folders.
-```sh
-python immunostruct/preprocessing/cancer_graph_construction_new_KBG.py
-```
+**PyG graph files**
+
+We have provided the PyTorch Geometric (PyG) graphs on huggingface. You just need to download them and put them under `data` folder.
+
+<details>
+  <summary>How the PyG graphs are generated</summary>
+
+The PyG graphs are generated using a three-step process under `immunostruct/preprocessing`. The generation scripts are available in case you ever need to run some or all of them.
+
+1. Option 1: Using the online MSA server (slow, rate-limited, not recommended for >2000 sequences). Starting at `ImmunoStruct` root folder.
+    ```sh
+    # [CPU] Step 1-3. Prepare MSA for AlphaFold.
+    # Download colabfold and REMEMBER where it is downloaded to.
+    python -m colabfold.download
+
+    # Prepare MSA.
+    conda activate immuno
+    cd immunostruct/preprocessing
+    python step1-3_server_sequence_to_msa.py \
+        --input-csv ../../data/ImmunoStruct_IEDB_data.csv \
+        --output-dir ../../data/pdb_files/IEDB/ \
+        --tmp-dir /tmp/ \
+        --allele-col-name allele \
+        --peptide-col-name peptide
+
+    python step1-3_server_sequence_to_msa.py \
+        --input-csv ../../data/ImmunoStruct_CEDAR_data_cancer.csv \
+        --output-dir ../../data/pdb_files/CEDAR_cancer/ \
+        --tmp-dir /tmp/ \
+        --allele-col-name allele \
+        --peptide-col-name mut_pep
+
+    python step1-3_server_sequence_to_msa.py \
+        --input-csv ../../data/ImmunoStruct_CEDAR_data_wildtype.csv \
+        --output-dir ../../data/pdb_files/CEDAR_wildtype/ \
+        --tmp-dir /tmp/ \
+        --allele-col-name allele \
+        --peptide-col-name wt_pep
+
+    python step1-3_server_sequence_to_msa.py \
+        --input-csv ../../data/ImmunoStruct_clinical_data.csv \
+        --output-dir ../../data/pdb_files/clinical/ \
+        --tmp-dir /tmp/ \
+        --allele-col-name allele \
+        --peptide-col-name mut_pep
+
+    # [GPU] Step 4. AlphaFold2.
+    # start/end help run multiple jobs in parallel.
+    python step4_msa_to_pdb.py \
+        --input-csv ../../data/ImmunoStruct_IEDB_data.csv \
+        --output-dir ../../data/pdb_files/IEDB/ \
+        --start 0 --end 24540 \
+        --params-loc /path/to/colabfold \
+        --allele-col-name allele \
+        --peptide-col-name peptide
+
+    python step4_msa_to_pdb.py \
+        --input-csv ../../data/ImmunoStruct_CEDAR_data_cancer.csv \
+        --output-dir ../../data/pdb_files/CEDAR_cancer/ \
+        --start 0 --end 2801 \
+        --params-loc /path/to/colabfold \
+        --allele-col-name allele \
+        --peptide-col-name mut_pep
+
+    python step4_msa_to_pdb.py \
+        --input-csv ../../data/ImmunoStruct_CEDAR_data_wildtype.csv \
+        --output-dir ../../data/pdb_files/CEDAR_wildtype/ \
+        --start 0 --end 2801 \
+        --params-loc /path/to/colabfold \
+        --allele-col-name allele \
+        --peptide-col-name wt_pep
+
+    python step4_msa_to_pdb.py \
+        --input-csv ../../data/ImmunoStruct_clinical_data.csv \
+        --output-dir ../../data/pdb_files/clinical/ \
+        --start 0 --end 29485 \
+        --params-loc /path/to/colabfold \
+        --allele-col-name allele \
+        --peptide-col-name mut_pep
+
+    # [CPU] Step 5. Moving and renaming the structure data in PDB files.
+    python step5_rename_pdb.py \
+        --input-dir ../../data/pdb_files/IEDB/ \
+        --output-dir ../../data/alphafold2_pdb_IEDB/
+
+    python step5_rename_pdb.py \
+        --input-dir ../../data/pdb_files/CEDAR_cancer/ \
+        --output-dir ../../data/alphafold2_pdb_CEDAR_cancer/
+
+    python step5_rename_pdb.py \
+        --input-dir ../../data/pdb_files/CEDAR_wildtype/ \
+        --output-dir ../../data/alphafold2_pdb_CEDAR_wildtype/
+
+    python step5_rename_pdb.py \
+        --input-dir ../../data/pdb_files/clinical/ \
+        --output-dir ../../data/alphafold2_pdb_clinical/
+
+    # [CPU] Step 6. Generating PyG graphs (structures in PDB files to structures in PyTorch .pt files).
+    python step6_pdb_to_pyg.py \
+        --input-dir ../../data/alphafold2_pdb_IEDB/ \
+        --output-dir ../../data/graph_pyg_IEDB/
+
+    python step6_pdb_to_pyg.py \
+        --input-dir ../../data/alphafold2_pdb_CEDAR_cancer/ \
+        --output-dir ../../data/graph_pyg_CEDAR_cancer/
+
+    python step6_pdb_to_pyg.py \
+        --input-dir ../../data/alphafold2_pdb_CEDAR_wildtype/ \
+        --output-dir ../../data/graph_pyg_CEDAR_wildtype/
+
+    python step6_pdb_to_pyg.py \
+        --input-dir ../../data/alphafold2_pdb_clinical/ \
+        --output-dir ../../data/graph_pyg_clinical/
+    ```
+
+2. Option 2: Performing MSA locally (what we did). Starting at `ImmunoStruct` root folder.
+    ```sh
+    # [CPU] Step 1-3. Prepare MSA for AlphaFold.
+    # Download colabfold and REMEMBER where it is downloaded to.
+    python -m colabfold.download
+
+    # Download the MSA database locally.
+    mkdir ./database_msa/
+    cd ./database_msa/
+    wget https://wwwuser.gwdg.de/~compbiol/colabfold/uniref30_2302.tar.gz
+    tar -xzvf uniref30_2302.tar.gz
+    mmseqs tsv2exprofiledb uniref30_2302 uniref30_2302_db
+    cd ..
+
+    # Prepare MSA.
+    conda activate local_msa
+    cd immunostruct/preprocessing
+    python step1_local_sequence_to_fasta.py \
+        --input-csv ../../data/ImmunoStruct_IEDB_data.csv \
+        --output-fasta ../../data/fasta/ImmunoStruct_IEDB_data.fasta \
+        --allele-col-name allele \
+        --peptide-col-name peptide
+    python step2_local_fasta_to_a3m.py \
+        --input-fasta ../../data/fasta/ImmunoStruct_IEDB_data.fasta \
+        --msa-database-dir ../../database_msa/ \
+        --output-dir ../../data/a3m/IEDB/
+    python step3_local_a3m_to_msa.py \
+        --input-dir ../../data/a3m/IEDB/ \
+        --output-dir ../../data/pdb_files/IEDB/ \
+        --input-csv ../../data/ImmunoStruct_IEDB_data.csv \
+        --allele-col-name allele \
+        --peptide-col-name peptide
+
+    python step1_local_sequence_to_fasta.py \
+        --input-csv ../../data/ImmunoStruct_CEDAR_data_cancer.csv \
+        --output-fasta ../../data/fasta/ImmunoStruct_CEDAR_data_cancer.fasta \
+        --allele-col-name allele \
+        --peptide-col-name mut_pep
+    python step2_local_fasta_to_a3m.py \
+        --input-fasta ../../data/fasta/ImmunoStruct_CEDAR_data_cancer.fasta \
+        --msa-database-dir ../../database_msa/ \
+        --output-dir ../../data/a3m/CEDAR_cancer/
+    python step3_local_a3m_to_msa.py \
+        --input-dir ../../data/a3m/CEDAR_cancer/ \
+        --output-dir ../../data/pdb_files/CEDAR_cancer/ \
+        --input-csv ../../data/ImmunoStruct_CEDAR_data_cancer.csv \
+        --allele-col-name allele \
+        --peptide-col-name mut_pep
+
+    python step1_local_sequence_to_fasta.py \
+        --input-csv ../../data/ImmunoStruct_CEDAR_data_wildtype.csv \
+        --output-fasta ../../data/fasta/ImmunoStruct_CEDAR_data_wildtype.fasta \
+        --allele-col-name allele \
+        --peptide-col-name wt_pep
+    python step2_local_fasta_to_a3m.py \
+        --input-fasta ../../data/fasta/ImmunoStruct_CEDAR_data_wildtype.fasta \
+        --msa-database-dir ../../database_msa/ \
+        --output-dir ../../data/a3m/CEDAR_wildtype/
+    python step3_local_a3m_to_msa.py \
+        --input-dir ../../data/a3m/CEDAR_wildtype/ \
+        --output-dir ../../data/pdb_files/CEDAR_wildtype/ \
+        --input-csv ../../data/ImmunoStruct_CEDAR_data_wildtype.csv \
+        --allele-col-name allele \
+        --peptide-col-name wt_pep
+
+    python step1_local_sequence_to_fasta.py \
+        --input-csv ../../data/ImmunoStruct_clinical_data.csv \
+        --output-fasta ../../data/fasta/ImmunoStruct_clinical_data.fasta \
+        --allele-col-name allele \
+        --peptide-col-name mut_pep
+    python step2_local_fasta_to_a3m.py \
+        --input-fasta ../../data/fasta/ImmunoStruct_clinical_data.fasta \
+        --msa-database-dir ../../database_msa/ \
+        --output-dir ../../data/a3m/clinical/
+    python step3_local_a3m_to_msa.py \
+        --input-dir ../../data/a3m/clinical/ \
+        --output-dir ../../data/pdb_files/clinical/ \
+        --input-csv ../../data/ImmunoStruct_clinical_data.csv \
+        --allele-col-name allele \
+        --peptide-col-name mut_pep
+
+    # [GPU] Step 4. AlphaFold2.
+    # start/end help run multiple jobs in parallel.
+    conda deactivate
+    conda activate immuno
+    python step4_msa_to_pdb.py \
+        --input-csv ../../data/ImmunoStruct_IEDB_data.csv \
+        --output-dir ../../data/pdb_files/IEDB/ \
+        --start 0 --end 24540 \
+        --params-loc /path/to/colabfold \
+        --allele-col-name allele \
+        --peptide-col-name peptide
+
+    python step4_msa_to_pdb.py \
+        --input-csv ../../data/ImmunoStruct_CEDAR_data_cancer.csv \
+        --output-dir ../../data/pdb_files/CEDAR_cancer/ \
+        --start 0 --end 2801 \
+        --params-loc /path/to/colabfold \
+        --allele-col-name allele \
+        --peptide-col-name mut_pep
+
+    python step4_msa_to_pdb.py \
+        --input-csv ../../data/ImmunoStruct_CEDAR_data_wildtype.csv \
+        --output-dir ../../data/pdb_files/CEDAR_wildtype/ \
+        --start 0 --end 2801 \
+        --params-loc /path/to/colabfold \
+        --allele-col-name allele \
+        --peptide-col-name wt_pep
+
+    python step4_msa_to_pdb.py \
+        --input-csv ../../data/ImmunoStruct_clinical_data.csv \
+        --output-dir ../../data/pdb_files/clinical/ \
+        --start 0 --end 29485 \
+        --params-loc /path/to/colabfold \
+        --allele-col-name allele \
+        --peptide-col-name mut_pep
+
+    # [CPU] Step 5. Moving and renaming the structure data in PDB files.
+    python step5_rename_pdb.py \
+        --input-dir ../../data/pdb_files/IEDB/ \
+        --output-dir ../../data/alphafold2_pdb_IEDB/
+
+    python step5_rename_pdb.py \
+        --input-dir ../../data/pdb_files/CEDAR_cancer/ \
+        --output-dir ../../data/alphafold2_pdb_CEDAR_cancer/
+
+    python step5_rename_pdb.py \
+        --input-dir ../../data/pdb_files/CEDAR_wildtype/ \
+        --output-dir ../../data/alphafold2_pdb_CEDAR_wildtype/
+
+    python step5_rename_pdb.py \
+        --input-dir ../../data/pdb_files/clinical/ \
+        --output-dir ../../data/alphafold2_pdb_clinical/
+
+    # [CPU] Step 6. Generating PyG graphs (structures in PDB files to structures in PyTorch .pt files).
+    python step6_pdb_to_pyg.py \
+        --input-dir ../../data/alphafold2_pdb_IEDB/ \
+        --output-dir ../../data/graph_pyg_IEDB/
+
+    python step6_pdb_to_pyg.py \
+        --input-dir ../../data/alphafold2_pdb_CEDAR_cancer/ \
+        --output-dir ../../data/graph_pyg_CEDAR_cancer/
+
+    python step6_pdb_to_pyg.py \
+        --input-dir ../../data/alphafold2_pdb_CEDAR_wildtype/ \
+        --output-dir ../../data/graph_pyg_CEDAR_wildtype/
+
+    python step6_pdb_to_pyg.py \
+        --input-dir ../../data/alphafold2_pdb_clinical/ \
+        --output-dir ../../data/graph_pyg_clinical/
+    ```
+
+
+</details>
 
 
 ### Training and Testing
@@ -230,23 +529,48 @@ python immunostruct/preprocessing/cancer_graph_construction_new_KBG.py
    Create a project on [Weights & Biases](https://wandb.ai/home) matching your project name.
 
 2. **Run Experiments**
-   ```sh
-   # HybridModelv2 with full sequence and sequence loss
-   python train_PropIEDB_PropCancer_ImmunoCancer.py --full-sequence --sequence-loss --model HybridModelv2 --wandb-username YOUR_WANDB_USERNAME
 
-   # HybridModel with full sequence and sequence loss
-   python train_PropIEDB_PropCancer_ImmunoCancer.py --full-sequence --sequence-loss --model HybridModel --wandb-username YOUR_WANDB_USERNAME
+    NOTE: these are already deprecated. See `immunostruct/old_scripts`.
+    ```sh
+    # Sequence + structure + biochemical property + multimodal multihead attention
+    python train_PropIEDB_PropCancer_ImmunoCancer.py --full-sequence --sequence-loss --model HybridModelv2 --wandb-username YOUR_WANDB_USERNAME
 
-   # Sequence with fingerprint model
-   python train_PropIEDB_PropCancer_ImmunoCancer.py --full-sequence --sequence-loss --model SequenceFpModel --wandb-username YOUR_WANDB_USERNAME
+    # Sequence + structure + biochemical property
+    python train_PropIEDB_PropCancer_ImmunoCancer.py --full-sequence --sequence-loss --model HybridModel --wandb-username YOUR_WANDB_USERNAME
 
-   # Sequence-only model
-   python train_PropIEDB_PropCancer_ImmunoCancer.py --full-sequence --sequence-loss --model SequenceModel --wandb-username YOUR_WANDB_USERNAME
+    # Sequence + biochemical property
+    python train_PropIEDB_PropCancer_ImmunoCancer.py --full-sequence --sequence-loss --model SequenceFpModel --wandb-username YOUR_WANDB_USERNAME
 
-   # Structure-only model
-   python train_PropIEDB_PropCancer_ImmunoCancer.py --full-sequence --model StructureModel --wandb-username YOUR_WANDB_USERNAME
-   ```
+    # Sequence-only model
+    python train_PropIEDB_PropCancer_ImmunoCancer.py --full-sequence --sequence-loss --model SequenceModel --wandb-username YOUR_WANDB_USERNAME
 
+    # Structure-only model
+    python train_PropIEDB_PropCancer_ImmunoCancer.py --full-sequence --model StructureModel --wandb-username YOUR_WANDB_USERNAME
+    ```
+
+3. **Our main experiments**
+
+    These are examples for training ImmunoStruct.
+
+    ```sh
+    # IEDB training
+    python train_IEDB_wFT.py --model HybridModelv2 --sequence-loss --full-sequence --seed 1 --wandb-username immunoteam
+
+    # CEDAR training
+    python train_CEDAR_wFT.py --model HybridModelv2_Comparative --sequence-loss --full-sequence --comparative --use-wt-for-downstream --seed 1 --wandb-username immunoteam
+    ```
+
+    For running inference using the models we provide:
+    ```sh
+    # IEDB inference
+    python infer_IEDB_or_CEDAR.py --infer_dataset IEDB --model HybridModelv2 --model-path ../results/IEDB_model_seed1.pt --full-sequence --seed 1
+
+    # CEDAR inference
+    python infer_IEDB_or_CEDAR.py --infer_dataset CEDAR --model HybridModel_Comparative --model-path ../results/CEDAR_model_seed2.pt --full-sequence --seed 2
+
+    # Clinical inference
+    python infer_clinical_only.py --model HybridModel_Comparative --model-path ../results/CEDAR_model_seed2.pt --full-sequence
+    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -262,7 +586,9 @@ ImportError: $some_path/libstdc++.so.6: version 'GLIBCXX_3.4.29' not found
 ```
 **Solution:** Add your conda environment path to `LD_LIBRARY_PATH`:
 ```sh
-export LD_LIBRARY_PATH=/path/to/conda/envs/immuno/lib:$LD_LIBRARY_PATH
+conda activate immuno
+echo $CONDA_PREFIX
+export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
 ```
 
 **CUDA Compatibility Issues**
