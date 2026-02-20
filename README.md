@@ -378,6 +378,9 @@ The PyG graphs are generated using a three-step process under `immunostruct/prep
     wget https://wwwuser.gwdg.de/~compbiol/colabfold/uniref30_2302.tar.gz
     tar -xzvf uniref30_2302.tar.gz
     mmseqs tsv2exprofiledb uniref30_2302 uniref30_2302_db
+    wget https://wwwuser.gwdg.de/~compbiol/colabfold/colabfold_envdb_202108.tar.gz
+    tar -xzvf colabfold_envdb_202108.tar.gz
+    mmseqs tsv2exprofiledb colabfold_envdb_202108 colabfold_envdb_202108_db
     cd ..
 
     # Prepare MSA.
