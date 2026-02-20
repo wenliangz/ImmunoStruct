@@ -562,13 +562,13 @@ The PyG graphs are generated using a three-step process under `immunostruct/prep
     For running inference using the models we provide:
     ```sh
     # IEDB inference
-    python infer_IEDB_or_CEDAR.py --infer_dataset IEDB --model HybridModelv2 --model-path ../results/IEDB_model.pt --full-sequence
+    python infer_IEDB_or_CEDAR.py --infer_dataset IEDB --model HybridModelv2 --model-path ../results/IEDB_model_seed1.pt --full-sequence --seed 1
 
     # CEDAR inference
-    python infer_IEDB_or_CEDAR.py --infer_dataset CEDAR --model HybridModel_Comparative --model-path ../results/CEDAR_model.pt --full-sequence
+    python infer_IEDB_or_CEDAR.py --infer_dataset CEDAR --model HybridModel_Comparative --model-path ../results/CEDAR_model_seed2.pt --full-sequence --seed 2
 
     # Clinical inference
-    python infer_clinical_only.py --model HybridModel_Comparative --model-path ../results/CEDAR_model.pt --full-sequence --use-wt-for-downstream
+    python infer_clinical_only.py --model HybridModel_Comparative --model-path ../results/CEDAR_model_seed2.pt --full-sequence
     ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

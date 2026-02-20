@@ -37,9 +37,11 @@ if __name__ == "__main__":
     # Data paths
     parser.add_argument("--graph-dir", default="$ROOT/data/graph_pyg_clinical/", type=str)
     parser.add_argument("--seq-path", default="$ROOT/data/ImmunoStruct_clinical_data.csv", type=str)
+    parser.add_argument("--clinical-seq-path", default="$ROOT/data/ImmunoStruct_clinical_data.csv", type=str)
+    parser.add_argument("--clinical-survival-path", default="$ROOT/data/ImmunoStruct_clinical_data_survival.csv", type=str)
 
     # Save paths
-    parser.add_argument("--figure-save-dir", default="$ROOT/figures/ImmunoCancer/", type=str)
+    parser.add_argument("--figure-save-dir", default="$ROOT/figures/clinical/", type=str)
 
     config = parser.parse_args()
 
@@ -91,6 +93,8 @@ if __name__ == "__main__":
     test_stats = inference_clinical_only(config,
                                          model,
                                          device,
+                                         clin_seq_path=config.clinical_seq_path,
+                                         clin_survival_path=config.clinical_survival_path,
                                          clinical_loader=clinical_loader,
                                          fig_save_folder=os.path.join(config.figure_save_dir, "results"))
 

@@ -199,27 +199,27 @@ class ClinicalDataset(Dataset):
 
         first_valid_pep_pair = None
         for _, df_entry in seq_df.iterrows():
-            import pdb; pdb.set_trace()
-            mhc_pep_pair = df_entry['combo']
+            mhc_pep_pair = df_entry['allele'] + "_" + df_entry['mut_pep']
             if mhc_pep_pair in name_mapper.keys():
                 first_valid_pep_pair = mhc_pep_pair
                 break
 
         for _, df_entry in seq_df.iterrows():
-            mhc_pep_pair = df_entry['combo']
+            mhc_pep_pair = df_entry['allele'] + "_" + df_entry['mut_pep']
 
             if mhc_pep_pair in name_mapper.keys():
                 encoded_full_seq.append(encoded_full_sequence_map[mhc_pep_pair])
                 encoded_peptide_seq.append(encoded_peptide_map[mhc_pep_pair])
                 # NOTE: currently a hack because these values are not avaliable yet.
                 peptide_property.append([0.4, 0.4])
-                dgl_graphs.append(graph_mapper[name_mapper[mhc_pep_pair][1]])
+                dgl_graphs.append(graph_mapper[mhc_pep_pair])
 
             else:
+                # Put a NaN placeholder for sequence, structure and property.
                 encoded_full_seq.append(np.ones_like(encoded_full_sequence_map[first_valid_pep_pair]) * np.nan)
                 encoded_peptide_seq.append(np.ones_like(encoded_peptide_map[first_valid_pep_pair]) * np.nan)
                 peptide_property.append(np.ones_like([0.4, 0.4]) * np.nan)
-                dgl_graphs.append(graph_mapper[name_mapper[first_valid_pep_pair][1]])  # placeholder
+                dgl_graphs.append(graph_mapper[first_valid_pep_pair])
 
         self.class_weights = 0.5
 
