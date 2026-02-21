@@ -511,9 +511,8 @@ We have provided the structure data encoded as PyTorch Geometric (PyG) graphs on
         --output-dir ../../data/graph_pyg_clinical/
     ```
 
-
 </details>
-
+<br>
 
 ### Training and Testing
 1. **Activate the environment**
