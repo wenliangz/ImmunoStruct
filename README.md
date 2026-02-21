@@ -8,8 +8,8 @@
 
   [![nature](https://img.shields.io/badge/nature-machine_intelligence-gold)](https://www.nature.com/articles/s42256-025-01163-y)
   [![PDF](https://img.shields.io/badge/PDF-DADBDD)](https://www.nature.com/articles/s42256-025-01163-y.pdf)
-  [![Huggingface](https://img.shields.io/badge/Dataset-ImmunoStruct-orange)](https://huggingface.co/datasets/ChenLiu1996/ImmunoStruct)
-  [![Huggingface](https://img.shields.io/badge/Model-ImmunoStruct-orange)](https://huggingface.co/ChenLiu1996/ImmunoStruct)  
+  [![Huggingface](https://img.shields.io/badge/Dataset-orange)](https://huggingface.co/datasets/ChenLiu1996/ImmunoStruct)
+  [![Huggingface](https://img.shields.io/badge/Model-orange)](https://huggingface.co/ChenLiu1996/ImmunoStruct)  
   [![GitHub Stars](https://img.shields.io/github/stars/KrishnaswamyLab/ImmunoStruct.svg?style=social\&label=Stars)](https://github.com/KrishnaswamyLab/ImmunoStruct)
   <br>[![LinkedIn](https://img.shields.io/badge/LinkedIn-Kevin-blue)](https://www.linkedin.com/in/kevin-bijan-givechian-phd-36467ba3/)
   [![LinkedIn](https://img.shields.io/badge/LinkedIn-Joao-blue)](https://www.linkedin.com/in/joao-felipe-rocha/)
