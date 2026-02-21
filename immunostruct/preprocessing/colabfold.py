@@ -1,5 +1,5 @@
 # Copied from:
-# https://github.com/sokrypton/ColabFold/blob/main/beta/colabfold_alphafold.py
+# https://github.com/sokrypton/ColabFold/blob/main/beta/colabfold.py
 
 # fmt: off
 

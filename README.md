@@ -168,6 +168,8 @@ Before installation, ensure you have:
     python -m pip install graphein[extras]
     python -m pip install lifelines
     python -m pip install huggingface_hub
+    python -m pip install ipykernel
+    python -m pip install ipywidgets
     ```
 
     The following steps might be necessary if you encounter problems running the inference. These are some package incompatibilities that we managed to resolve in a manual way:
@@ -251,7 +253,7 @@ We have provided the structure data encoded as PyTorch Geometric (PyG) graphs on
 1. Option 1: Using the online MSA server (slow, rate-limited, not recommended for >2000 sequences). Starting at `ImmunoStruct` root folder.
     ```sh
     # [CPU] Step 1-3. Prepare MSA for AlphaFold.
-    # Download colabfold and REMEMBER where it is downloaded to.
+    # Download colabfold and REMEMBER where it is downloaded to. Likely default to `~/.cache/colabfold`.
     python -m colabfold.download
 
     # Prepare MSA.

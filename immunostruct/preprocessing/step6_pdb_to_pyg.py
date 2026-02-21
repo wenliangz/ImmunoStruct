@@ -18,6 +18,50 @@ from graphein.protein.graphs import read_pdb_to_dataframe
 
 ROOT_DIR = '/'.join(os.path.realpath(__file__).split('/')[:-3])
 
+GRAPH_CONFIG = ProteinGraphConfig(
+    edge_construction_functions=[
+        add_peptide_bonds,
+        add_hydrogen_bond_interactions,
+        add_hydrophobic_interactions,
+        add_ionic_interactions,
+    ],
+    node_metadata_functions=[
+        amino_acid_one_hot,
+        hydrogen_bond_acceptor,
+        hydrogen_bond_donor,
+    ],
+    granularity="CA",
+    exclude_waters=False,
+)
+
+# Graphein does not encode the peptide sequence uniquely; use our own encoding.
+AA_ENCODING = {
+    'GLY': [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'SER': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+    'HIS': [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'MET': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'ARG': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    'TYR': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    'PHE': [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'THR': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+    'VAL': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    'PRO': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+    'GLU': [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'ILE': [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'ALA': [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'ASP': [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'GLN': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+    'TRP': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    'LYS': [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'LEU': [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'ASN': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    'CYS': [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'MASK': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+}
+
+_CONVERTOR = GraphFormatConvertor(src_format='nx', dst_format='pyg')
+
+
 def mask_sequence(enc_dict, seq_one_hot, percentage: float = 10):
     total_len = len(seq_one_hot)
     mask_len = int(total_len * percentage / 100)
@@ -30,55 +74,59 @@ def mask_sequence(enc_dict, seq_one_hot, percentage: float = 10):
 
     return masked_seq
 
-def main(args):
 
+def pdb_to_pyg(pdb_path, mask_percentage=0):
+    """Convert a single AlphaFold peptide-MHC PDB to a PyG Data object.
+
+    Extracts the MHC extracellular domain (first 179 residues of chain A)
+    and the peptide (chain B). Node features are the amino-acid one-hot
+    encoding concatenated with hydrogen-bond donor/acceptor counts.
+
+    Args:
+        pdb_path: Path to the PDB file.
+        mask_percentage: Percentage of peptide residues to mask (0 = no masking).
+
+    Returns:
+        A torch_geometric ``Data`` object.
+    """
+    g = construct_graph(config=GRAPH_CONFIG, path=pdb_path)
+
+    # First 179 residues are the extracellular domain of the MHC. 273 and beyond are the peptide.
+    g2 = extract_subgraph_by_sequence_position(g, list(range(1, 180)) + list(range(273, 1000)))
+    g_pyg = _CONVERTOR(g2)
+
+    tdf = read_pdb_to_dataframe(pdb_path)
+
+    # Chain A is the MHC.
+    tdfa = tdf[tdf['chain_id'] == 'A']
+    tdfa = tdfa.drop_duplicates('residue_number')
+    tdfa = tdfa[:179]
+    sequence_a = tdfa['residue_name'].tolist()
+
+    # Chain B is the peptide.
+    tdfb = tdf[tdf['chain_id'] == 'B']
+    tdfb = tdfb.drop_duplicates('residue_number')
+    sequence_b = tdfb['residue_name'].tolist()
+
+    n_hdonors = torch.tensor([d['hbond_donors'] for n, d in g2.nodes(data=True)])
+    n_hacceptors = torch.tensor([d['hbond_acceptors'] for n, d in g2.nodes(data=True)])
+
+    aa_one_hot_a = torch.tensor([AA_ENCODING[x] for x in sequence_a])
+    aa_one_hot_b = torch.tensor([AA_ENCODING[x] for x in sequence_b])
+
+    # Apply masking to peptide (percentage=0 means no masking).
+    masked_aa_one_hot_b = mask_sequence(AA_ENCODING, aa_one_hot_b, percentage=mask_percentage)
+    aa_one_hot = torch.cat([aa_one_hot_a, masked_aa_one_hot_b], dim=0)
+
+    node_feats = torch.cat([aa_one_hot, n_hdonors, n_hacceptors], dim=1)
+    g_pyg.x = node_feats
+
+    return g_pyg
+
+
+def main(args):
     os.makedirs(args.output_dir, exist_ok=True)
 
-    # Generate different edge constructions
-    new_edge_funcs = {
-        "edge_construction_functions": [
-            add_peptide_bonds,
-            add_hydrogen_bond_interactions,
-            add_hydrophobic_interactions,
-            add_ionic_interactions
-            ],
-        "node_metadata_functions": [
-            amino_acid_one_hot,
-            hydrogen_bond_acceptor,
-            hydrogen_bond_donor],
-        "granularity": "CA",
-        "exclude_waters": False}
-
-    config = ProteinGraphConfig(**new_edge_funcs)
-
-    config.dict()
-
-    # Graphein does not appear to encode the peptide sequence uniquely, redefine an encoding sequence.
-    enc_dict = {
-        'GLY': [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        'SER': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-        'HIS': [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        'MET': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        'ARG': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        'TYR': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        'PHE': [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        'THR': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-        'VAL': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-        'PRO': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        'GLU': [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        'ILE': [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        'ALA': [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        'ASP': [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        'GLN': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-        'TRP': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-        'LYS': [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        'LEU': [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        'ASN': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-        'CYS': [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        'MASK': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    }
-
-    convertor = GraphFormatConvertor(src_format = 'nx', dst_format = 'pyg')
     file_list = sorted(glob(os.path.join(args.input_dir, '*.pdb')))
     print(f"Converting {len(file_list)} PDB files to PyG graphs...")
     for filename in tqdm(file_list):
@@ -89,53 +137,12 @@ def main(args):
                 print(f"Graph already exists for {filename_no_extension}")
                 continue
 
-            g = construct_graph(config = config, path = filename)
-
-            # First 179 residues are the extracellular domain of the MHC. 273 and beyond are the peptide.
-            g2 = extract_subgraph_by_sequence_position(g, list(range(1, 180)) + list(range(273, 1000)))
-            g_pyg = convertor(g2)
-
-            tdf = read_pdb_to_dataframe(filename)
-
-            # Chain A is the MHC.
-            tdfa = tdf[tdf['chain_id'] == 'A']
-            tdfa = tdfa.drop_duplicates('residue_number')
-            tdfa = tdfa[:179]
-            sequence_a = tdfa['residue_name'].tolist()
-
-            # Chain B is the peptide.
-            tdfb = tdf[tdf['chain_id'] == 'B']
-            tdfb = tdfb.drop_duplicates('residue_number')
-            sequence_b = tdfb['residue_name'].tolist()
-
-            # Add node features to each graph.
-            n_hdonors = torch.tensor([d['hbond_donors'] for n, d in g2.nodes(data=True)])
-            n_hacceptors = torch.tensor([d['hbond_acceptors'] for n, d in g2.nodes(data=True)])
-            #aa_one_hot = torch.tensor([d['amino_acid_one_hot'] for n, d in g2.nodes(data=True)])
-            #gphein_seq_a = torch.tensor([d['amino_acid_one_hot'] for n, d in g2a.nodes(data=True)])
-            #gphein_seq_b = torch.tensor([d['amino_acid_one_hot'] for n, d in g2b.nodes(data=True)])
-
-            # Amino acid one-hot encoding.
-            aa_one_hot_a = torch.tensor([enc_dict[x] for x in sequence_a])
-            aa_one_hot_b = torch.tensor([enc_dict[x] for x in sequence_b])
-
-            # Apply masking with a X% chance of masking each amino acid
-            # (applied only to peptide, increase percentage argument (eg, to 50) to mask 50% of the peptide)
-            masked_aa_one_hot_b = mask_sequence(enc_dict, aa_one_hot_b, percentage=0)
-            aa_one_hot = torch.cat([aa_one_hot_a, masked_aa_one_hot_b], dim=0)
-
-            # Use the masked amino acid one-hot encoding as node features, along with number of H-donors/acceptors.
-            node_feats = torch.cat([aa_one_hot, n_hdonors, n_hacceptors], dim=1)
-            g_pyg.x = node_feats
-
-            # Save the PyTorch graph to a file if desired.
+            g_pyg = pdb_to_pyg(filename, mask_percentage=0)
             torch.save(g_pyg, save_filename)
 
             print('done creating graph {}'.format(filename_no_extension), flush=True)
 
-            # Delete temporary variables to free memory.
-            del g, g2, g_pyg
-            # Explicitly call garbage collector.
+            del g_pyg
             gc.collect()
 
         except Exception as e:
