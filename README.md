@@ -187,8 +187,8 @@ Before installation, ensure you have:
 
 2. Download the pre-trained model weights from huggingface.
     ```sh
-    mkdir ../results/
-    cd ../results/
+    mkdir ../checkpoints/
+    cd ../checkpoints/
     hf download ChenLiu1996/ImmunoStruct --local-dir ./
     cd ../data/
     ```
@@ -543,13 +543,13 @@ We have provided the structure data encoded as PyTorch Geometric (PyG) graphs on
     For running inference using the models we provide:
     ```sh
     # IEDB inference
-    python infer_IEDB_or_CEDAR.py --infer_dataset IEDB --model HybridModelv2 --model-path ../results/IEDB_model_seed1.pt --full-sequence --seed 1
+    python infer_IEDB_or_CEDAR.py --infer_dataset IEDB --model HybridModelv2 --model-path ../checkpoints/IEDB_model_seed1.pt --full-sequence --seed 1
 
     # CEDAR inference
-    python infer_IEDB_or_CEDAR.py --infer_dataset CEDAR --model HybridModel_Comparative --model-path ../results/CEDAR_model_seed2.pt --full-sequence --seed 2
+    python infer_IEDB_or_CEDAR.py --infer_dataset CEDAR --model HybridModel_Comparative --model-path ../checkpoints/CEDAR_model_seed2.pt --full-sequence --seed 2
 
     # Clinical inference
-    python infer_clinical_only.py --model HybridModel_Comparative --model-path ../results/CEDAR_model_seed2.pt --full-sequence
+    python infer_clinical_only.py --model HybridModel_Comparative --model-path ../checkpoints/CEDAR_model_seed2.pt --full-sequence
     ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
