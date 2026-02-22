@@ -178,7 +178,7 @@ Before installation, ensure you have:
 
 ### Data Preparation
 
-1. Download the dataset from huggingface. Starting at the project root (`ImmunoStruct`):
+1. Download the dataset from huggingface. You need to sign up for huggingface when prompted. Starting at the project root (`ImmunoStruct`):
     ```sh
     conda activate immuno
     cd ./data/
