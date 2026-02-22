@@ -63,7 +63,7 @@ News in Chinese<br>
 
 
 &#9744; TODO: create and release an end-to-end tool.
-<br>&#x2705; Feb 20, 2026: The datasets and model weights are now [open-sourced on huggingface](https://huggingface.co/datasets/ChenLiu1996/ImmunoStruct). See [instructions](https://github.com/KrishnaswamyLab/ImmunoStruct?tab=readme-ov-file#data-preparation).
+<br>&#x2705; Feb 20, 2026: The [multimodal datasets](https://huggingface.co/datasets/ChenLiu1996/ImmunoStruct) and [pre-trained model weights](https://huggingface.co/ChenLiu1996/ImmunoStruct) are now open-sourced on huggingface. See [instructions](https://github.com/KrishnaswamyLab/ImmunoStruct?tab=readme-ov-file#data-preparation).
 <br>&#x2705; Dec 31, 2025: **[Published](https://www.nature.com/articles/s42256-025-01163-y) in Nature Machine Intelligence.**
 <br>&#x2705; Dec 04, 2025: Informally presented at NeurIPS 2025 (did not submit, no dual-submission concern).
 <br>&#x2705; Aug 18, 2025: Received the [Colton Innovation Fund](https://ventures.yale.edu/news/yales-colton-center-autoimmunity-announces-2025-awardees-advancing-innovation-autoimmune) from [Colton Center for Autoimmunity at Yale University](https://ventures.yale.edu/colton-center-for-autoimmunity).
