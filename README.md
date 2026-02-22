@@ -185,11 +185,12 @@ Before installation, ensure you have:
     hf download ChenLiu1996/ImmunoStruct --repo-type dataset --local-dir ./
     ```
 
-2. Move the pre-trained model weights.
+2. Download the pre-trained model weights from huggingface.
     ```sh
     mkdir ../results/
-    mv IEDB_model_seed1.pt ../results/
-    mv CEDAR_model_seed2.pt ../results/
+    cd ../results/
+    hf download ChenLiu1996/ImmunoStruct --local-dir ./
+    cd ../data/
     ```
 
 3. Make sure the following files are in the `data` folder:
