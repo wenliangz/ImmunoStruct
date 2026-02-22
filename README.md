@@ -155,9 +155,9 @@ Before installation, ensure you have:
     ```
 
     The following steps might be necessary if you encounter problems running the inference. These are some package incompatibilities that we managed to resolve in a manual way:
-    - Go to /path/to/environment/lib/python3.8/site-packages/jaxlib/xla_client.py: change `np.object` to `object`.
-    - Go to /path/to/environment/lib/python3.8/site-packages/alphafold/common/residue_constants.py: change `np.int` to `np.int32`.
-    - Go to /path/to/environment/lib/python3.8/site-packages/alphafold/data/templates.py: change `np.object` to `object`.
+    - Go to `PATH_TO_ENV/lib/python3.8/site-packages/jaxlib/xla_client.py`: change `np.object` to `object`.
+    - Go to `PATH_TO_ENV/lib/python3.8/site-packages/alphafold/common/residue_constants.py`: change `np.int` to `np.int32`.
+    - Go to `PATH_TO_ENV/lib/python3.8/site-packages/alphafold/data/templates.py`: change `np.object` to `object`.
 
 3. Create and build another environment for obtaining MSAs locally. Only relevant if you want to run your own protein folding.
     ```sh
