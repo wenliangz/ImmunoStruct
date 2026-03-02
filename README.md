@@ -44,6 +44,7 @@ Project leads: [Kevin Bijan Givechian](https://www.linkedin.com/in/kevin-bijan-g
 ## News
 
 News in English<br>
+[![news](https://img.shields.io/badge/news-Times-0F4D92)](https://time.news/ai-improves-personalized-cancer-vaccine-design-yale-study/)
 [![news](https://img.shields.io/badge/news-Yale_School_of_Medicine-0F4D92)](https://medicine.yale.edu/news-article/using-machine-learning-to-develop-personalized-vaccines-for-cancer/)
 [![news](https://img.shields.io/badge/news-Decoding_Bio-DADBDD)](https://decodingbio.substack.com/p/biobyte-144-a-virtual-model-of-cell)
 [![news](https://img.shields.io/badge/news-Bioengineer-DADBDD)](https://bioengineer.org/immunostruct-advancing-deep-learning-in-immunogenicity-prediction/)
