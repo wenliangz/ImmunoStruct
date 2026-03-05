@@ -49,7 +49,7 @@ News in English<br>
 [![news](https://img.shields.io/badge/news-Time_News_(Mar_2)-white)](https://time.news/ai-improves-personalized-cancer-vaccine-design-yale-study/)
 [![news](https://img.shields.io/badge/news-Innovita_Research-white)](https://www.innovitaresearch.com/2026/03/04/using-machine-learning-to-develop-personalized-vaccines-for-cancer/)
 [![news](https://img.shields.io/badge/news-Medical_Xpress-white)](https://medicalxpress.com/news/2026-02-personalized-vaccines-cancer-machine.html)
-[![news](https://img.shields.io/badge/news-Technology_org-white)](https://www.technology.org/2026/03/04/using-machine-learning-to-develop-personalized-vaccines-for-cancer/)
+[![news](https://img.shields.io/badge/news-Technology.org-white)](https://www.technology.org/2026/03/04/using-machine-learning-to-develop-personalized-vaccines-for-cancer/)
 [![news](https://img.shields.io/badge/news-Decoding_Bio-white)](https://decodingbio.substack.com/p/biobyte-144-a-virtual-model-of-cell)
 [![news](https://img.shields.io/badge/news-Bioengineer-white)](https://bioengineer.org/immunostruct-advancing-deep-learning-in-immunogenicity-prediction/)
 [![news](https://img.shields.io/badge/news-GeneOnline-white)](https://www.geneonline.com/deep-learning-model-immunostruct-developed-to-improve-prediction-of-immunogenic-epitopes-for-vaccine-research/)
