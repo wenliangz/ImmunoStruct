@@ -45,16 +45,20 @@ Project leads: [Kevin Bijan Givechian](https://www.linkedin.com/in/kevin-bijan-g
 
 News in English<br>
 [![news](https://img.shields.io/badge/news-Yale_School_of_Medicine-0F4D92)](https://medicine.yale.edu/news-article/using-machine-learning-to-develop-personalized-vaccines-for-cancer/)
-[![news](https://img.shields.io/badge/news-Innovita_Research-DADBDD)](https://www.innovitaresearch.com/2026/03/04/using-machine-learning-to-develop-personalized-vaccines-for-cancer/)
-[![news](https://img.shields.io/badge/news-Decoding_Bio-DADBDD)](https://decodingbio.substack.com/p/biobyte-144-a-virtual-model-of-cell)
-[![news](https://img.shields.io/badge/news-Bioengineer-DADBDD)](https://bioengineer.org/immunostruct-advancing-deep-learning-in-immunogenicity-prediction/)
-[![news](https://img.shields.io/badge/news-GeneOnline-DADBDD)](https://www.geneonline.com/deep-learning-model-immunostruct-developed-to-improve-prediction-of-immunogenic-epitopes-for-vaccine-research/)
+[![news](https://img.shields.io/badge/news-Time_News_(Mar_5)-white)](https://time.news/machine-learning-immune-system-personalized-medicine-clues/)
+[![news](https://img.shields.io/badge/news-Time_News_(Mar_2)-white)](https://time.news/ai-improves-personalized-cancer-vaccine-design-yale-study/)
+[![news](https://img.shields.io/badge/news-Innovita_Research-white)](https://www.innovitaresearch.com/2026/03/04/using-machine-learning-to-develop-personalized-vaccines-for-cancer/)
+[![news](https://img.shields.io/badge/news-Medical_Xpress-white)](https://medicalxpress.com/news/2026-02-personalized-vaccines-cancer-machine.html)
+[![news](https://img.shields.io/badge/news-Technology_org-white)](https://www.technology.org/2026/03/04/using-machine-learning-to-develop-personalized-vaccines-for-cancer/)
+[![news](https://img.shields.io/badge/news-Decoding_Bio-white)](https://decodingbio.substack.com/p/biobyte-144-a-virtual-model-of-cell)
+[![news](https://img.shields.io/badge/news-Bioengineer-white)](https://bioengineer.org/immunostruct-advancing-deep-learning-in-immunogenicity-prediction/)
+[![news](https://img.shields.io/badge/news-GeneOnline-white)](https://www.geneonline.com/deep-learning-model-immunostruct-developed-to-improve-prediction-of-immunogenic-epitopes-for-vaccine-research/)
 <br>[![wiki](https://img.shields.io/badge/wiki-Wikipedia_Immunogenicity-pink)](https://en.wikipedia.org/wiki/Immunogenicity)
 
 
 News in Chinese<br>
 [![news](https://img.shields.io/badge/news-新智元@网易-gold)](https://www.163.com/dy/article/KJ13HJ340511ABV6.html)
-[![news](https://img.shields.io/badge/news-腾讯云_(Tencent_Cloud)-DADBDD)](https://cloud.tencent.com/developer/article/2612794)
+[![news](https://img.shields.io/badge/news-腾讯云_(Tencent_Cloud)-white)](https://cloud.tencent.com/developer/article/2612794)
 <br>[![news](https://img.shields.io/badge/news-新智元@搜狐-F6E7B2)](https://m.sohu.com/a/974949014_473283)
 [![news](https://img.shields.io/badge/news-新智元@智源社区-F6E7B2)](https://hub.baai.ac.cn/view/51813)
 [![news](https://img.shields.io/badge/news-新浪财经_转发_新智元-F6E7B2)](https://finance.sina.com.cn/stock/t/2026-01-11/doc-inhfxvtm9135944.shtml)
